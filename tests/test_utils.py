@@ -1,0 +1,74 @@
+import unittest
+import asyncio
+import shutil
+import urllib
+import os
+
+from git.cmd import Git
+
+from src.utils import shazam_find_track_info, convert2mp3, get_youtube_audiostreams, \
+                    download_youtube_audiostream
+
+
+class TestUtilsShazam(unittest.TestCase):
+
+    def test_shazam_find_track_info(self):
+        shazam_out = asyncio.run(shazam_find_track_info('media/example_0.mp3'))
+        print(shazam_out['track']['images']['coverarthq'])
+        assert shazam_out['track']['subtitle'].upper() == 'RED HOT CHILI PEPPERS'
+        assert shazam_out['track']['title'] == 'Scar Tissue'
+        assert shazam_out['track']['sections'][0]['metadata'][0]['text'] == 'Californication'
+        assert shazam_out['track']['genres']['primary'] == 'Alternative'
+        assert shazam_out['track']['sections'][0]['metadata'][2]['text'] == '1999'
+        assert urllib.request.urlopen(shazam_out['track']['images']['coverarthq']).status == 200 # OK
+
+
+class TestUtilsYoutube(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestUtilsYoutube, cls).setUpClass()
+        cls.media_dir = 'media'
+        cls.best_audiostream = get_youtube_audiostreams('https://www.youtube.com/watch?v=jNQXAC9IVRw&vl=en', get_best_audio=True)
+        cls.audiostreams = get_youtube_audiostreams('https://www.youtube.com/watch?v=jNQXAC9IVRw&vl=en')
+        cls.mp3_filepath = os.path.join(cls.media_dir, 'tmp.mp3')
+        cls.webm_filepath = os.path.join(cls.media_dir, 'tmp.webm')
+
+
+    @classmethod
+    def tearDownClass(cls):
+        super(TestUtilsYoutube, cls).setUpClass()
+        os.remove(cls.mp3_filepath)
+        os.remove(cls.webm_filepath)
+
+
+    def test_get_youtube_audiostreams(self):
+        assert max([float(a.bitrate.replace('k', 'e3')) for a in self.audiostreams]) == float(self.best_audiostream.bitrate.replace('k', 'e3'))
+        assert self.best_audiostream.extension == 'webm'
+        assert self.best_audiostream.filename == 'Me at the zoo.webm'
+        assert self.best_audiostream.bitrate == '97.308k'
+        assert self.best_audiostream.get_filesize() == 230633
+
+    
+    def test_download_youtube_audiostream(self):
+        download_youtube_audiostream(self.best_audiostream, save_filepath=self.webm_filepath)
+        assert os.path.exists(self.webm_filepath)
+
+
+    def test_convert2mp3(self):
+        shutil.copy(os.path.join(self.media_dir, 'example.webm'), self.webm_filepath)
+        convert2mp3(self.webm_filepath, self.best_audiostream.extension)
+        assert os.path.exists(self.mp3_filepath)
+        assert not os.path.exists(self.webm_filepath)
+
+
+class TestUtilsUpdate(unittest.TestCase):
+
+    def test_update_app(self):
+        status = Git().fetch('https://github.com/jriverosesma/mp3-autotagger','main')
+        assert status is not None
+
+
+if __name__ == '__main__':
+    unittest.main()
+    
