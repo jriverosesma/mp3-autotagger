@@ -46,6 +46,3 @@ My dad wanted a tool to automatically tag all the .mp3 files from his old music 
 2. Click `Get audio information` button to display audio information. Uncheck `Get best audio` before clicking on `Get audio information` to select an audio with lower quality than the best quality available. You can select a new audio quality using the combo box inside the `Audio options` area. 
 3. Uncheck `Convert audio to .mp3` box to keep the original download audio format.
 4. Click `Download` and wait for audio to download (and convert). You will find it in your PC `Downloads` folder.
-        
-## Upcoming updates
-- Implement Spanish translation.
