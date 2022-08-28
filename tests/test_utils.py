@@ -29,8 +29,8 @@ class TestUtilsYoutube(unittest.TestCase):
     def setUpClass(cls):
         super(TestUtilsYoutube, cls).setUpClass()
         cls.media_dir = 'media'
-        cls.best_audiostream = get_youtube_audiostreams('https://www.youtube.com/watch?v=jNQXAC9IVRw&vl=en', get_best_audio=True)
-        cls.audiostreams = get_youtube_audiostreams('https://www.youtube.com/watch?v=jNQXAC9IVRw&vl=en')
+        cls.best_audiostream = get_youtube_audiostreams('https://www.youtube.com/watch?v=HHjSdy9l7Kc', get_best_audio=True)
+        cls.audiostreams = get_youtube_audiostreams('https://www.youtube.com/watch?v=HHjSdy9l7Kc')
         cls.mp3_filepath = os.path.join(cls.media_dir, 'tmp.mp3')
         cls.webm_filepath = os.path.join(cls.media_dir, 'tmp.webm')
 
@@ -45,9 +45,10 @@ class TestUtilsYoutube(unittest.TestCase):
     def test_get_youtube_audiostreams(self):
         assert max([float(a.bitrate.replace('k', 'e3')) for a in self.audiostreams]) == float(self.best_audiostream.bitrate.replace('k', 'e3'))
         assert self.best_audiostream.extension == 'webm'
-        assert self.best_audiostream.filename == 'Me at the zoo.webm'
-        assert self.best_audiostream.bitrate == '97.308k'
-        assert self.best_audiostream.get_filesize() == 230633
+        print(self.best_audiostream.filename)
+        assert self.best_audiostream.filename == '15 Seconds.webm'
+        assert self.best_audiostream.bitrate == '132.155k'
+        assert self.best_audiostream.get_filesize() == 248138
 
     
     def test_download_youtube_audiostream(self):
