@@ -1,10 +1,12 @@
 import os
 import pafy
 
-from PyQt5 import QtWidgets as qtw
 from pydub import AudioSegment as convert
 from shazamio import Shazam
 from git.cmd import Git
+
+from PyQt5 import QtWidgets as qtw, QtCore
+from PyQt5.QtGui import QPixmap, QIcon
 
 
 shazam = Shazam()
@@ -41,13 +43,15 @@ def update_app_git():
     return status
 
 
-def get_open_files_and_dirs(parent=None, caption='', directory='', filter='', initialFilter='', options=None):
+def qt_get_open_files_and_dirs(parent=None, caption='', directory='', filter='', initialFilter='', options=None):
+
+    _translate = QtCore.QCoreApplication.translate
 
     def updateText():
         selected = []
         for index in view.selectionModel().selectedRows():
             selected.append(index.data())
-        lineEdit.setText(' '.join(selected))
+        lineEdit.setText(_translate('Main Window', ' '.join(selected)))
 
     dialog = qtw.QFileDialog(parent, windowTitle=caption)
     dialog.setFileMode(dialog.ExistingFiles)
@@ -68,8 +72,16 @@ def get_open_files_and_dirs(parent=None, caption='', directory='', filter='', in
     view.selectionModel().selectionChanged.connect(updateText)
 
     lineEdit = dialog.findChild(qtw.QLineEdit)
-    dialog.directoryEntered.connect(lambda: lineEdit.setText(''))
+    dialog.directoryEntered.connect(lambda: lineEdit.setText(_translate('Main Window', '')))
 
     result = dialog.exec_()
     if result:
         return dialog.selectedFiles()
+
+
+def qt_get_about_widget():
+        about_message_box = qtw.QMessageBox()
+        about_message_box.setWindowIcon(QIcon('media/main_icon.png'))
+        about_message_box.setIconPixmap(QPixmap('media/main_icon.png').scaled(75, 75))
+
+        return about_message_box

@@ -2,15 +2,16 @@ import sys
 import os
 import io
 
-from PyQt5 import QtWidgets as qtw, QtCore
-from PyQt5.QtGui import QFont, QPixmap
 from datetime import datetime
 from threading import Thread
 from pathlib import Path
 
+from PyQt5 import QtWidgets as qtw, QtCore
+from PyQt5.QtGui import QPixmap
+
 from src.ui_main_window import Ui_MainWindow
-from src.utils import get_open_files_and_dirs, get_youtube_audiostreams, download_youtube_audiostream, \
-    convert2mp3, update_app_git
+from src.utils import qt_get_open_files_and_dirs, qt_get_about_widget, download_youtube_audiostream, \
+    get_youtube_audiostreams, convert2mp3, update_app_git
 from src.mp3 import MP3
 
 
@@ -29,23 +30,48 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
 
         # Autotagger
         self.mp3_filepaths = []
-        self.log_folder = str(os.path.join(Path(__file__).parent.resolve(), "..\\logs"))
+        self.log_folder = str(os.path.join(Path(__file__).parent.resolve(), "../logs"))
         self.current_track = None
         self.cover_bytes = None
 
         # Youtube2MP3
         self.download_folder = str(os.path.join(Path.home(), 'Downloads'))
 
-        self.connect_signals_slots()
+        # Main window
+        self._translate = QtCore.QCoreApplication.translate
+        self.trans = QtCore.QTranslator(self)
+        self._set_app_scale()
+        self._connect_signals_slots()
 
 
-    def connect_signals_slots(self):
+    def _set_app_scale(self):
+        current_screen_size = qtw.qApp.primaryScreen().geometry()
+        original_screen_size = (1920, 1080) # (width, height)
+        original_window_size = self.size()
+        
+        # Compute ratios
+        width_ratio = current_screen_size.width() / original_screen_size[0]
+        height_ratio = current_screen_size.height() / original_screen_size[1]
+
+        # Resize main window
+        self.resize(
+            int(original_window_size.width() * width_ratio), 
+            int(original_window_size.height() * height_ratio)
+            )
+
+        # Set new maximum size constraints for cover label
+        self.label_cover.setMinimumWidth(int(self.checkBox_replace_info.width()))
+        self.label_cover.setMinimumHeight(int(self.checkBox_replace_info.width()))
+        self.label_cover.setMaximumWidth(int(width_ratio * self.label_cover.maximumWidth()))
+        self.label_cover.setMaximumHeight(int(height_ratio * self.label_cover.maximumHeight()))
+
+
+    def _connect_signals_slots(self):
         # Main window
         self.actionAbout.triggered.connect(self.show_about)
+        self.actionEnglish.triggered.connect(self.language_english)
         self.actionSpanish.triggered.connect(self.language_spanish)
         self.actionUpdates.triggered.connect(self.update_app)
-        self.pushButton_app_autotagger.pressed.connect(self.show_autotagger)
-        self.pushButton_app_youtube2mp3.pressed.connect(self.show_youtube2mp3)
 
         # Autotagger
         self.pushButton_browse.pressed.connect(self.browse_mp3)
@@ -61,16 +87,29 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
         self.progressBar_download_signal.connect(self.progressBar_download.setValue)
         self.label_yt_status_signal.connect(self.label_yt_status.setText)
 
+    
+    def _retranslate(self, qm_filepath=None):
+        if qm_filepath:
+            self.trans.load(qm_filepath)
+            qtw.QApplication.instance().installTranslator(self.trans)
+        else:
+            qtw.QApplication.instance().removeTranslator(self.trans)
+        self.retranslateUi(self)
+
 
     # Main window
     def show_about(self):
-        qtw.QMessageBox.about(
-            self,
-            'About MP3 Autotagger',
+        about_message_box = qt_get_about_widget()
+        about_message_box.setWindowTitle(self._translate('About Window', 'About MP3 Autotagger'))
+        about_message_box.setText(
+            self._translate(
+            'About Window',
             '<p>An application for MP3 autotagging and more.</p>'
             '<p>GitHub: <a href="https://github.com/jriverosesma/mp3-autotagger">https://github.com/jriverosesma/mp3-autotagger</a></p>'
             '<p>Email: <a href="jriverosesma@gmail.com">jriverosesma@gmail.com</a></p>'
+            )
         )
+        about_message_box.exec()
     
 
     # Main window
@@ -88,30 +127,21 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
         try:
             status = update_app_git()
             if status == 'Already up to date.':
-                self.show_info_message('No new updates available', title='Update')
+                self.show_info_message(self._translate('Update App Window', 'No new updates available', title='Update'))
             else:
-                self.show_info_message('<p>Updated successfully!</p>' '<p>Restart application for changes to take effect</p>', title='Update')
+                self.show_info_message(self._translate('Update App Window', '<p>Updated successfully!</p>' '<p>Restart application for changes to take effect</p>', title='Update'))
         except:
             self.show_error_message(message_md='Update failed!', title='Update')
         
 
     # Main window
+    def language_english(self):
+        self._retranslate()
+    
+
+    # Main window
     def language_spanish(self):
-        self.show_info_message('Not Implemented Yet!', title='Language Spanish')
-
-
-    # Main window
-    def show_autotagger(self):
-        self.stackedWidget.setCurrentIndex(0)
-        self.pushButton_app_autotagger.setFont(QFont('Iosevka', weight=QFont.Bold))
-        self.pushButton_app_youtube2mp3.setFont(QFont('Iosevka', weight=QFont.Normal))
-
-
-    # Main window
-    def show_youtube2mp3(self):
-        self.stackedWidget.setCurrentIndex(1)
-        self.pushButton_app_youtube2mp3.setFont(QFont('Iosevka', weight=QFont.Bold))
-        self.pushButton_app_autotagger.setFont(QFont('Iosevka', weight=QFont.Normal))
+        self._retranslate('translations/eng-es.qm')
 
 
     # Autotagger
@@ -126,12 +156,12 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
         if filepath:
             selected_files_mp3 = filepath
         else:
-            selected_files_mp3 = get_open_files_and_dirs(caption='Select directory or .mp3', filter='All files (*)\nMP3 files (*.mp3)')
+            selected_files_mp3 = qt_get_open_files_and_dirs(caption='Select directory or .mp3', filter='All files (*)\nMP3 files (*.mp3)')
 
         if selected_files_mp3:
             self.listWidget_tracks.clear()
             self.mp3_filepaths = []
-            self.lineEdit_mp3_dir.setText(str(selected_files_mp3))
+            self.lineEdit_mp3_dir.setText(self._translate('Main Window', str(selected_files_mp3)))
 
             for selected_file in selected_files_mp3:
                 self.mp3_filepaths += self.find_all_mp3(selected_file)
@@ -144,7 +174,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
             
             for i, filepath in enumerate(self.mp3_filepaths):
                 self.listWidget_tracks.addItem(f'{i+1}. {os.path.basename(filepath)}')
-            self.label_mp3_count.setText(f'{len(self.mp3_filepaths)} .mp3 files found')
+            self.label_mp3_count.setText(self._translate('Main Window', f'{len(self.mp3_filepaths)} .mp3 files found'))
 
 
     # Autotagger
@@ -173,17 +203,16 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
     def set_cover(self):
         cover = QPixmap()
         cover.loadFromData(io.BytesIO(self.cover_bytes).read())
-        cover = cover.scaled(388, 389)
         self.label_cover.setPixmap(cover)
 
 
     # Autotagger
     def set_track_info(self):
-        self.lineEdit_artist.setText(self.current_track.tags['TPE1'])
-        self.lineEdit_title.setText(self.current_track.tags['TIT2'])
-        self.lineEdit_album.setText(self.current_track.tags['TALB'])
-        self.lineEdit_genre.setText(self.current_track.tags['TCON'])
-        self.lineEdit_year.setText(self.current_track.tags['TDRC'])
+        self.lineEdit_artist.setText(self._translate('Main Window', self.current_track.tags['TPE1']))
+        self.lineEdit_title.setText(self._translate('Main Window', self.current_track.tags['TIT2']))
+        self.lineEdit_album.setText(self._translate('Main Window', self.current_track.tags['TALB']))
+        self.lineEdit_genre.setText(self._translate('Main Window', self.current_track.tags['TCON']))
+        self.lineEdit_year.setText(self._translate('Main Window', self.current_track.tags['TDRC']))
         if self.current_track.tags['APIC']:
             self.cover_bytes = self.current_track.tags['APIC']
         else:
@@ -225,10 +254,10 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
     def load_mp3(self, filepath, raise_exception=False):
         try:
             self.current_track = MP3(filepath)
-            self.label_autotagger_status.setText('')
+            self.label_autotagger_status.setText(self._translate('Main Window', ''))
         except:
             self.unset_track_info()
-            self.label_autotagger_status.setText('Unable to load .mp3')
+            self.label_autotagger_status.setText(self._translate('Main Window', 'Unable to load .mp3'))
             if raise_exception:
                 raise
 
@@ -236,7 +265,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
     # Autotagger
     def find_tags(self, thread_shazam=True, raise_exception=False):
         
-        self.stackedWidget.widget(0).setEnabled(False)
+        self.tabWidget.widget(0).setEnabled(False)
 
         try:
             if thread_shazam:
@@ -248,11 +277,11 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
                 self.current_track.update_tags_shazam(replace_info=self.checkBox_replace_info.isChecked())
             self.set_track_info()
         except:
-            self.label_autotagger_status.setText('Unexpected error finding tags with Shazam')
+            self.label_autotagger_status.setText(self._translate('Main Window', 'Unexpected error finding tags with Shazam'))
             if raise_exception:
                 raise
         
-        self.stackedWidget.widget(0).setEnabled(True)
+        self.tabWidget.widget(0).setEnabled(True)
 
 
     # Autotagger
@@ -267,10 +296,10 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
             self.current_track.save_as(new_filepath=new_filepath)
             
             self.mp3_filepaths[self.listWidget_tracks.currentRow()] = self.current_track.filepath
-            self.listWidget_tracks.currentItem().setText(f'{self.listWidget_tracks.currentRow()}. {os.path.basename(self.current_track.filepath)}')
-            self.label_autotagger_status.setText('Saved succesfully')
+            self.listWidget_tracks.currentItem().setText(self._translate('Main Window', f'{self.listWidget_tracks.currentRow()}. {os.path.basename(self.current_track.filepath)}'))
+            self.label_autotagger_status.setText(self._translate('Main Window', 'Saved succesfully'))
         except:
-            self.label_autotagger_status.setText('Unexpected error saving tags')
+            self.label_autotagger_status.setText(self._translate('Main Window', 'Unexpected error saving tags'))
             if raise_exception:
                 raise
         
@@ -284,7 +313,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
                 self.listWidget_tracks.setCurrentRow(i)
                 try:
                     self.load_mp3(filepath, raise_exception=True)
-                    self.label_autotagger_status.setText('Tagging files...')
+                    self.label_autotagger_status.setText(self._translate('Main Window', 'Tagging files...'))
                     self.find_tags()
                     self.save_tags()
                     log.writelines({self.current_track.filepath + ': OK\n'})
@@ -293,7 +322,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
 
                 self.progressBar_find_save_all_tags.setValue(int((i+1)/n_files * 100))
 
-        self.label_autotagger_status.setText(f'Done. Log saved to {log_filepath}')
+        self.label_autotagger_status.setText('Main Window', f'Done. Log saved to {log_filepath}')
         
         self.listWidget_tracks.unsetCursor()
         self.unset_track_info()
@@ -314,18 +343,18 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
             for aust in self.audiostreams:
                 self.comboBox_audio_select.addItem(f'{aust.extension} | {aust.bitrate} kbps | {round(aust.get_filesize() / 1e6, 2)} MB') 
             
-            self.lineEdit_video_title.setText(self.audiostreams[0].title)
+            self.lineEdit_video_title.setText(self._translate('Main Window', self.audiostreams[0].title))
             self.comboBox_audio_select.setEnabled(True)
             self.pushButton_download.setEnabled(True)
-            self.label_yt_status.setText('Ready to download')
+            self.label_yt_status.setText(self._translate('Main Window', 'Ready to download'))
 
         except ValueError:
-            self.label_yt_status.setText('Bad URL')
+            self.label_yt_status.setText(self._translate('Main Window', 'Bad URL'))
             self.comboBox_audio_select.setEnabled(False)
             self.pushButton_download.setEnabled(False)
         
         except:
-            self.label_yt_status.setText('Unexpected Error')
+            self.label_yt_status.setText(self._translate('Main Window', 'Unexpected Error'))
             self.comboBox_audio_select.setEnabled(False)
             self.pushButton_download.setEnabled(False)
 
@@ -338,7 +367,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
 
     # Youtube2MP3
     def download_yt_audio(self):
-        self.stackedWidget.widget(1).setEnabled(False)
+        self.tabWidget.widget(1).setEnabled(False)
 
         selected_audiostream = self.audiostreams[self.comboBox_audio_select.currentIndex()]
 
@@ -353,7 +382,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
             qtw.QApplication.processEvents()
 
         if self.checkBox_convert_audio_to_mp3.isChecked() and not error_text:
-            self.label_yt_status.setText('Download successful! Converting audio to .mp3...')
+            self.label_yt_status.setText(self._translate('Main Window', 'Download successful! Converting audio to .mp3...'))
             filepath = os.path.join(self.download_folder, selected_audiostream.filename)
             try:
                 thread_convert2mp3 = Thread(target=convert2mp3, args=(filepath, selected_audiostream.extension))
@@ -365,17 +394,19 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
                     error_text = 'Unexpected error converting audio to .mp3'
         
         if error_text:
-            self.label_yt_status.setText(error_text)
+            self.label_yt_status.setText(self._translate('Main Window', error_text))
         else:
-            self.label_yt_status.setText('Success!')
+            self.label_yt_status.setText(self._translate('Main Window', 'Success!'))
         
-        self.stackedWidget.widget(1).setEnabled(True)
-        
+        self.tabWidget.widget(1).setEnabled(True)
+
 
 if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)
-    
-    main_window = MainWindow() 
+    app.setStyle('Fusion')
+
+    main_window = MainWindow()
     main_window.show()
+    main_window.label_cover.setMinimumHeight(0) # Reset cover minimum height after showing main window
 
     sys.exit(app.exec_())
