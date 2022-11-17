@@ -6,7 +6,8 @@ def fix_pafy():
     with open(project_dir + '\\.venv\\Lib\\site-packages\\pafy\\backend_youtube_dl.py', 'r+') as f:
         lines = f.readlines()
         f.seek(0)
-        lines[53] = '#' + lines[53]
+        lines[52] = '#' + lines[52] # Comment 'likes' field
+        lines[53] = '#' + lines[53] # Comment 'dislikes' field
         f.writelines(lines)
 
 
