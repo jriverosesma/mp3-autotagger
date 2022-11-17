@@ -27,7 +27,7 @@ My dad wanted a tool to automatically tag all the .mp3 files from his old music 
 0. Prerequisite: Install [Anaconda](https://www.anaconda.com/) and [Git for Windows](https://gitforwindows.org/) (or another Git client) if not already installed.
 1. Open `Git Bash` and navigate where you want to clone the repository; then clone it using: `git clone https://github.com/jriverosesma/mp3-autotagger`.
 3. Open `Anaconda Prompt` and navigate to `scripts` inside cloned repository folder.
-4. Run `setup.bat`.
+4. Run `setup_win.bat`.
 
 ## Usage
 1. Open Anaconda Prompt and navigate to `scripts` inside cloned repository folder.
