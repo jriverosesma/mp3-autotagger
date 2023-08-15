@@ -1,0 +1,66 @@
+[tool.poetry]
+name = "mp3_autotagger"
+version = "0.1.0"
+description = "A Tinder ML-powered auto swiper."
+authors = ["Juan Rivero Sema <jriverosesma@gmail.com>"]
+readme = "README.md"
+packages = [{include = "mp3_autotagger"}]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Repository" = "https://github.com/jriverosesma/mp3-autotagger"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyqt5 = "^5.15.9"
+pydub = "^0.25.1"
+mutagen = "^1.46.0"
+shazamio = "^0.4.0.1"
+gitpython = "^3.1.32"
+
+# Development
+black = { version = "^23.7.0", optional = true }
+isort = { version = "^5.12.0", optional = true }
+flake8 = { version = "^6.1.0", optional = true }
+pre-commit = { version = "^3.3.3", optional = true }
+
+# Test
+pytest = { version = "^7.4.0", optional = true }
+pytest-sugar = { version = "^0.9.7", optional = true }
+
+# Test only dependencies
+pillow = { version = "^10.0.0", optional = true }
+
+[tool.poetry.extras]
+dev = ["black", "isort", "flake8", "pre-commit"]
+test = ["pytest", "pytest-sugar", "pillow"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.bumpver]
+current_version = "0.1.0"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit          = false
+tag             = false
+push            = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    '^current_version = "{version}"$',
+    '^version = "{version}"$',
+]
+"mp3_autotagger/__init__.py" = [
+    '^__version__ = "{version}"$',
+]
