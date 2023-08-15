@@ -11,7 +11,7 @@ classifiers = [
 ]
 
 [project.urls]
-"Repository" = "https://github.com/jriverosesma/mp3-autotagger"
+"Homepage" = "https://github.com/jriverosesma/mp3-autotagger"
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -41,6 +41,9 @@ test = ["pytest", "pytest-sugar", "pillow"]
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+mp3_autotagger = "mp3_autotagger.main:main"
 
 [tool.black]
 line-length = 120

@@ -410,7 +410,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
         self.tabWidget.widget(1).setEnabled(True)
 
 
-if __name__ == "__main__":
+def main():
     app = qtw.QApplication(sys.argv)
     app.setStyle("Fusion")
 
@@ -419,3 +419,7 @@ if __name__ == "__main__":
     main_window.label_cover.setMinimumHeight(0)  # Reset cover minimum height after showing main window
 
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()
