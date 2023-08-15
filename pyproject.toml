@@ -19,7 +19,6 @@ pyqt5 = "^5.15.9"
 pydub = "^0.25.1"
 mutagen = "^1.46.0"
 shazamio = "^0.4.0.1"
-gitpython = "^3.1.32"
 
 # Development
 black = { version = "^23.7.0", optional = true }

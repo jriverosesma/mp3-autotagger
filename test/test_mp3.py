@@ -11,31 +11,31 @@ from mp3_autotagger.mp3 import MP3
 
 @pytest.fixture(scope="class")
 def setup_class_data():
-    media_dir = "test/assets"
-    tmp_filepath = os.path.join(media_dir, "tmp.mp3")
-    yield media_dir, tmp_filepath
+    assets_dir = "test/assets"
+    tmp_filepath = os.path.join(assets_dir, "tmp.mp3")
+    yield assets_dir, tmp_filepath
     os.remove(tmp_filepath)
 
 
 def test_example_0(setup_class_data):
-    media_dir, tmp_filepath = setup_class_data
-    shutil.copyfile(os.path.join(media_dir, "example_0.mp3"), tmp_filepath)
+    assets_dir, tmp_filepath = setup_class_data
+    shutil.copyfile(os.path.join(assets_dir, "example_0.mp3"), tmp_filepath)
     track = MP3(tmp_filepath)
     track.update_tags_shazam()
     track.save_as(tmp_filepath)
     new_track = MP3(tmp_filepath)
     cover = Image.open(io.BytesIO(new_track.tags["APIC"]))
-    tmp_cover_filepath = os.path.join(media_dir, "tmp_cover.png")
+    tmp_cover_filepath = os.path.join(assets_dir, "tmp_cover.png")
     cover.save(tmp_cover_filepath)
 
     assert new_track.tags["TPE1"] == "RED HOT CHILI PEPPERS"
-    shutil.copyfile(os.path.join(media_dir, "example_0.mp3"), tmp_filepath)
+    shutil.copyfile(os.path.join(assets_dir, "example_0.mp3"), tmp_filepath)
     track = MP3(tmp_filepath)
     track.update_tags_shazam()
     track.save_as(tmp_filepath)
     new_track = MP3(tmp_filepath)
     cover = Image.open(io.BytesIO(new_track.tags["APIC"]))
-    tmp_cover_filepath = os.path.join(media_dir, "tmp_cover.png")
+    tmp_cover_filepath = os.path.join(assets_dir, "tmp_cover.png")
     cover.save(tmp_cover_filepath)
 
     assert new_track.tags["TPE1"] == "RED HOT CHILI PEPPERS"
@@ -51,8 +51,8 @@ def test_example_0(setup_class_data):
 
 
 def test_example_1(setup_class_data):
-    media_dir, tmp_filepath = setup_class_data
-    shutil.copyfile(os.path.join(media_dir, "example_1.mp3"), tmp_filepath)
+    assets_dir, tmp_filepath = setup_class_data
+    shutil.copyfile(os.path.join(assets_dir, "example_1.mp3"), tmp_filepath)
     track = MP3(tmp_filepath)
     assert track.tags["TPE1"] == "CREEDENCE CLEARWATER REVIVAL"
     assert track.tags["TIT2"] == "Suzie Q"
@@ -75,7 +75,7 @@ def test_example_1(setup_class_data):
 
 
 def test_example_2(setup_class_data):
-    media_dir, tmp_filepath = setup_class_data
-    shutil.copyfile(os.path.join(media_dir, "example_2.mp3"), tmp_filepath)
+    assets_dir, tmp_filepath = setup_class_data
+    shutil.copyfile(os.path.join(assets_dir, "example_2.mp3"), tmp_filepath)
     with pytest.raises(HeaderNotFoundError):
         MP3(tmp_filepath)

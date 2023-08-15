@@ -1,6 +1,7 @@
 import os
+import subprocess
+import sys
 
-from git.cmd import Git
 from pydub import AudioSegment as convert
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets as qtw
@@ -36,10 +37,13 @@ def download_youtube_audiostream(audiostream, save_filepath=None, quiet=True, ca
         audiostream.download()
 
 
-def update_app_git():
-    status = Git().pull("https://github.com/jriverosesma/mp3-autotagger", "main")
-
-    return status
+def update_app(package_name="mp3-autotagger"):
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", package_name])
+    except subprocess.CalledProcessError as e:
+        return f"Error occurred while updating {package_name}. Error: {e}"
+    else:
+        return f"{package_name} updated successfully!"
 
 
 def qt_get_open_files_and_dirs(parent=None, caption="", directory="", filter="", initialFilter="", options=None):

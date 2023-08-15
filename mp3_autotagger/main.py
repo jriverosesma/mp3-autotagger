@@ -18,7 +18,7 @@ from mp3_autotagger.utils import (
     get_youtube_audiostreams,
     qt_get_about_widget,
     qt_get_open_files_and_dirs,
-    update_app_git,
+    update_app,
 )
 
 
@@ -121,7 +121,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
     # Main window
     def update_app(self):
         try:
-            status = update_app_git()
+            status = update_app()
             if status == "Already up to date.":
                 self.show_info_message(self._translate("Update App Window", "No new updates available", title="Update"))
             else:

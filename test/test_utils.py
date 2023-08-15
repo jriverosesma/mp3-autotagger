@@ -4,18 +4,18 @@ import shutil
 import urllib
 
 import pytest
-from git.cmd import Git
 
 from mp3_autotagger.utils import (
     convert2mp3,
     download_youtube_audiostream,
     get_youtube_audiostreams,
     shazam_find_track_info,
+    update_app,
 )
 
 
 @pytest.fixture(scope="class")
-def media_dir():
+def assets_dir():
     return "test/assets"
 
 
@@ -30,13 +30,13 @@ def audiostreams():
 
 
 @pytest.fixture(scope="class")
-def mp3_filepath(media_dir):
-    return os.path.join(media_dir, "tmp.mp3")
+def mp3_filepath(assets_dir):
+    return os.path.join(assets_dir, "tmp.mp3")
 
 
 @pytest.fixture(scope="class")
-def webm_filepath(media_dir):
-    return os.path.join(media_dir, "tmp.webm")
+def webm_filepath(assets_dir):
+    return os.path.join(assets_dir, "tmp.webm")
 
 
 @pytest.fixture(scope="class", autouse=True)
@@ -48,8 +48,8 @@ def cleanup(mp3_filepath, webm_filepath):
         os.remove(webm_filepath)
 
 
-def test_shazam_find_track_info():
-    shazam_out = asyncio.run(shazam_find_track_info("media/example_0.mp3"))
+def test_shazam_find_track_info(assets_dir):
+    shazam_out = asyncio.run(shazam_find_track_info(assets_dir + "/example_0.mp3"))
     print(shazam_out["track"]["images"]["coverarthq"])
     assert shazam_out["track"]["subtitle"].upper() == "RED HOT CHILI PEPPERS"
     assert shazam_out["track"]["title"] == "Scar Tissue"
@@ -75,13 +75,13 @@ def test_download_youtube_audiostream(best_audiostream, webm_filepath):
     assert os.path.exists(webm_filepath)
 
 
-def test_convert2mp3(media_dir, best_audiostream, mp3_filepath, webm_filepath):
-    shutil.copy(os.path.join(media_dir, "example.webm"), webm_filepath)
+def test_convert2mp3(assets_dir, best_audiostream, mp3_filepath, webm_filepath):
+    shutil.copy(os.path.join(assets_dir, "example.webm"), webm_filepath)
     convert2mp3(webm_filepath, best_audiostream.extension)
     assert os.path.exists(mp3_filepath)
     assert not os.path.exists(webm_filepath)
 
 
 def test_update_app():
-    status = Git().fetch("https://github.com/jriverosesma/mp3-autotagger", "main")
-    assert status is not None
+    status = update_app()
+    assert status == "mp3-autotagger updated successfully!"
