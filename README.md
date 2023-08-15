@@ -1,5 +1,7 @@
+[![Unit Tests](https://github.com/jriverosesma/mp3-autotagger/actions/workflows/unit_tests.yaml/badge.svg)](https://github.com/jriverosesma/mp3-autotagger/actions/workflows/unit_tests.yaml)
+
 # MP3 Autotagger
- Windows application to tag  .mp3 files automatically and more.
+A simple application to tag .mp3 files automatically and more.
 
 ## Tools
 ### MP3 autotagger
@@ -24,14 +26,19 @@ Enter URL from Youtube video and download audio as an .mp3 file.
 My dad wanted a tool to automatically tag all the .mp3 files from his old music library and easily download audio from Youtube videos. I developed this especifically for my dad needs only :)
 
 ## Installation
-0. Prerequisite: Install [Anaconda](https://www.anaconda.com/) and [Git for Windows](https://gitforwindows.org/) (or another Git client) if not already installed.
-1. Open `Git Bash` and navigate where you want to clone the repository; then clone it using: `git clone https://github.com/jriverosesma/mp3-autotagger`.
-3. Open `Anaconda Prompt` and navigate to `scripts` inside cloned repository folder.
-4. Run `setup_win.bat`.
+1. Prerequisite: Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (more lightweight) or [Anaconda](https://www.anaconda.com/).
+2. Open Anaconda Prompt and run the following commands:
+```
+conda create -y -n mp3-autotagger python=3.11.4 --no-default-packages
+conda activate mp3-autotagger
+conda install ffmpeg
+python -m pip install --upgrade pip
+pip install mp3-autotagger
+```
 
 ## Usage
-1. Open Anaconda Prompt and navigate to `scripts` inside cloned repository folder.
-2. Run `run.bat`.
+1. Open Anaconda Prompt and run the following command to activate the conda environment: `conda activate mp3-autotagger`
+2. Run the following command to launch the application: `mp3-autotagger`
 
 ### MP3 autotagger
 1. Click on `Browse` and select .mp3 files or folders containing .mp3 files. A list of .mp3 files will show on left box.
@@ -39,7 +46,7 @@ My dad wanted a tool to automatically tag all the .mp3 files from his old music 
 3. Replace information in fields and click on the cover to choose a new one from your images.
 4. Click on `Find tags` if you want MP3 Autotagger to automatically find the tags and cover for you. Uncheck `Replace information` box to keep the original .mp3 tags that are not missing.
 5. Click on `Save tags` to overwrite tags in original file. The new name of the file will be in the format `ARTIST - Title`.
-- Click on `Find and save tags for all files` to automatically find and save tags for all found .mp3 files. Uncheck `Replace information` box to keep the original .mp3 tags that are not missing. A log file in the format `log_YearMonthDay_HourMinuteSecond.txt` will be saved in the `log` folder of the cloned repository at the end of the execution. The log file helps shows for each file if everything went fine when it was processed (`OK`) or not (`FAILED`).
+- Click on `Find and save tags for all files` to automatically find and save tags for all found .mp3 files. Uncheck `Replace information` box to keep the original .mp3 tags that are not missing. A log file in the format `log_YearMonthDay_HourMinuteSecond.txt` will be saved in the `log` folder of the cloned repository at the end of the execution. The log file shows for each file if everything went fine when it was processed (`OK`) or if something went wrong (`FAILED`).
 
 ### Youtube2MP3
 1. Copy and paste URL in `Enter URL` field.
