@@ -1,5 +1,5 @@
 cd "%~dp0.."
 call conda activate "%~dp0..\.venv"
-.venv\python -m src.main
+mp3-autotagger
 call conda deactivate
 cd "%~dp0.."
