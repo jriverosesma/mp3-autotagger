@@ -213,7 +213,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
         if self.current_track.tags["APIC"]:
             self.cover_bytes = self.current_track.tags["APIC"]
         else:
-            with open("media/no_cover.jpg", mode="rb") as f:
+            with open("assets/no_cover.jpg", mode="rb") as f:
                 self.cover_bytes = f.read()
         self.set_cover()
 

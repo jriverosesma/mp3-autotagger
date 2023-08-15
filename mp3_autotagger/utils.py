@@ -1,11 +1,11 @@
 import os
 
-import pafy
 from git.cmd import Git
 from pydub import AudioSegment as convert
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets as qtw
 from PyQt5.QtGui import QIcon, QPixmap
+from pytube import YouTube
 from shazamio import Shazam
 
 shazam = Shazam()
@@ -24,7 +24,7 @@ def convert2mp3(filepath, original_extension, save_filepath=None, remove_old_aud
 
 
 def get_youtube_audiostreams(url, get_best_audio=False):
-    video = pafy.new(url)
+    video = YouTube(url)
 
     return video.getbestaudio() if get_best_audio else video.audiostreams
 
@@ -79,7 +79,7 @@ def qt_get_open_files_and_dirs(parent=None, caption="", directory="", filter="",
 
 def qt_get_about_widget():
     about_message_box = qtw.QMessageBox()
-    about_message_box.setWindowIcon(QIcon("media/main_icon.png"))
-    about_message_box.setIconPixmap(QPixmap("media/main_icon.png").scaled(75, 75))
+    about_message_box.setWindowIcon(QIcon("assets/main_icon.png"))
+    about_message_box.setIconPixmap(QPixmap("assets/main_icon.png").scaled(75, 75))
 
     return about_message_box

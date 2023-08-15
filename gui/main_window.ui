@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../media/main_icon.png</normaloff>../media/main_icon.png</iconset>
+    <normaloff>../assets/main_icon.png</normaloff>../assets/main_icon.png</iconset>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -51,7 +51,7 @@
       <widget class="QWidget" name="tab_autotagger">
        <attribute name="icon">
         <iconset>
-         <normaloff>../media/autotagger_icon.png</normaloff>../media/autotagger_icon.png</iconset>
+         <normaloff>../assets/autotagger_icon.png</normaloff>../assets/autotagger_icon.png</iconset>
        </attribute>
        <attribute name="title">
         <string>Autotagger</string>
@@ -401,7 +401,7 @@
       <widget class="QWidget" name="tab_youtube2mp3">
        <attribute name="icon">
         <iconset>
-         <normaloff>../media/youtube2mp3_icon.png</normaloff>../media/youtube2mp3_icon.png</iconset>
+         <normaloff>../assets/youtube2mp3_icon.png</normaloff>../assets/youtube2mp3_icon.png</iconset>
        </attribute>
        <attribute name="title">
         <string>Youtube2MP3</string>
