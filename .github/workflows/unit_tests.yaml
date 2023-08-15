@@ -1,4 +1,4 @@
-name: main
+name: Unit Tests
 
 on:
   push:
@@ -24,12 +24,13 @@ jobs:
       uses: conda-incubator/setup-miniconda@v2
       with:
         python-version: "3.11.4"
-        activate-environment: tinderbot
+        activate-environment: mp3-autotagger
         auto-activate-base: false
 
-    - name: Install dependencies with pip
+    - name: Install dependencies with conda and pip
       shell: bash -l {0}
       run: |
+        conda install ffmpeg
         python -m pip install --upgrade pip
         pip install -e .[dev,test,tools]
 
