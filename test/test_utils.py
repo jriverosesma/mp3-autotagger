@@ -1,87 +1,69 @@
 import asyncio
 import os
-import shutil
 import urllib
 
 import pytest
 
-from mp3_autotagger.utils import (
-    convert2mp3,
-    download_youtube_audiostream,
-    get_youtube_audiostreams,
-    shazam_find_track_info,
-    update_app,
-)
+from mp3_autotagger.utils import get_package_version, get_youtube_audiostream, shazam_find_track_info, update_package
 
 
 @pytest.fixture(scope="class")
-def assets_dir():
+def package_name():
+    return "mp3-autotagger"
+
+
+@pytest.fixture(scope="class")
+def assets_dirpath():
     return "test/assets"
 
 
 @pytest.fixture(scope="class")
-def best_audiostream():
-    return get_youtube_audiostreams("https://www.youtube.com/watch?v=HHjSdy9l7Kc", get_best_audio=True)
+def video_url():
+    return "https://www.youtube.com/watch?v=HHjSdy9l7Kc"
 
 
 @pytest.fixture(scope="class")
-def audiostreams():
-    return get_youtube_audiostreams("https://www.youtube.com/watch?v=HHjSdy9l7Kc")
+def mp3_filepath(assets_dirpath):
+    return os.path.join(assets_dirpath, "tmp.mp3")
 
 
 @pytest.fixture(scope="class")
-def mp3_filepath(assets_dir):
-    return os.path.join(assets_dir, "tmp.mp3")
-
-
-@pytest.fixture(scope="class")
-def webm_filepath(assets_dir):
-    return os.path.join(assets_dir, "tmp.webm")
+def audiostream(video_url, assets_dirpath):
+    return get_youtube_audiostream(video_url, assets_dirpath)
 
 
 @pytest.fixture(scope="class", autouse=True)
-def cleanup(mp3_filepath, webm_filepath):
+def cleanup(mp3_filepath, assets_dirpath):
     yield  # This makes sure the cleanup happens after tests run
     if os.path.exists(mp3_filepath):
         os.remove(mp3_filepath)
-    if os.path.exists(webm_filepath):
-        os.remove(webm_filepath)
+    if os.path.exists(assets_dirpath + "/15 Seconds.mp3"):
+        os.remove(assets_dirpath + "/15 Seconds.mp3")
 
 
-def test_shazam_find_track_info(assets_dir):
-    shazam_out = asyncio.run(shazam_find_track_info(assets_dir + "/example_0.mp3"))
-    print(shazam_out["track"]["images"]["coverarthq"])
+def test_shazam_find_track_info(assets_dirpath):
+    shazam_out = asyncio.run(shazam_find_track_info(assets_dirpath + "/example_0.mp3"))
     assert shazam_out["track"]["subtitle"].upper() == "RED HOT CHILI PEPPERS"
     assert shazam_out["track"]["title"] == "Scar Tissue"
-    assert shazam_out["track"]["sections"][0]["metadata"][0]["text"] == "Californication (Deluxe Edition)"
+    assert shazam_out["track"]["sections"][0]["metadata"][0]["text"] == "Californication (Remastered)"
     assert shazam_out["track"]["genres"]["primary"] == "Alternative"
     assert shazam_out["track"]["sections"][0]["metadata"][2]["text"] == "1999"
     assert urllib.request.urlopen(shazam_out["track"]["images"]["coverarthq"]).status == 200  # OK
 
 
-def test_get_youtube_audiostreams(best_audiostream, audiostreams):
-    assert max([float(a.bitrate.replace("k", "e3")) for a in audiostreams]) == float(
-        best_audiostream.bitrate.replace("k", "e3")
-    )
-    assert best_audiostream.extension == "webm"
-    print(best_audiostream.filename)
-    assert best_audiostream.filename == "15 Seconds.webm"
-    assert best_audiostream.bitrate == "132.155k"
-    assert best_audiostream.get_filesize() == 248138
+def test_download_youtube_audiostream(audiostream, assets_dirpath):
+    assert audiostream["ext"] == "webm"
+    assert audiostream["title"] == "15 Seconds"
+    assert audiostream["abr"] == 132.155
+    assert audiostream["filesize"] == 248138
+    assert os.path.exists(assets_dirpath + f"/{audiostream['title']}.mp3")
 
 
-def test_download_youtube_audiostream(best_audiostream, webm_filepath):
-    download_youtube_audiostream(best_audiostream, save_filepath=webm_filepath)
-    assert os.path.exists(webm_filepath)
-
-
-def test_convert2mp3(assets_dir, best_audiostream, mp3_filepath, webm_filepath):
-    shutil.copy(os.path.join(assets_dir, "example.webm"), webm_filepath)
-    convert2mp3(webm_filepath, best_audiostream.extension)
-    assert os.path.exists(mp3_filepath)
-    assert not os.path.exists(webm_filepath)
-
-
-def test_update_app():
-    status = update_app()
-    assert status == "mp3-autotagger updated successfully!"
+def test_update_package(package_name):
+    initial_version = get_package_version(package_name)
+    status = update_package()
+    updated_version = get_package_version(package_name)
+    if updated_version == initial_version:
+        assert status == f"{package_name} is already at the latest version ({updated_version})."
+    else:
+        assert status == f"{package_name} updated successfully from version {initial_version} to {updated_version}!"

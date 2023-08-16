@@ -1,49 +1,75 @@
-import os
 import subprocess
 import sys
 
-from pydub import AudioSegment as convert
+import yt_dlp as ydl
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets as qtw
 from PyQt5.QtGui import QIcon, QPixmap
-from pytube import YouTube
 from shazamio import Shazam
 
 shazam = Shazam()
+
+
+class MP3AutotaggerException(Exception):
+    pass
 
 
 async def shazam_find_track_info(filepath):
     return await shazam.recognize_song(filepath)
 
 
-def convert2mp3(filepath, original_extension, save_filepath=None, remove_old_audio=True):
-    track = convert.from_file(filepath, format=original_extension)
-    save_filepath = save_filepath if save_filepath else os.path.splitext(filepath)[0] + ".mp3"
-    track.export(save_filepath, format="mp3", id3v2_version="3")  # Version 3 to display cover in WIN explorer
-    if remove_old_audio:
-        os.remove(filepath)
+def get_youtube_audiostream(url, save_dirpath="", download=True, quiet=True, callback=None):
+    ydl_opts = {
+        "quiet": quiet,
+        "format": "bestaudio/best",
+        "noplaylist": True,
+        "progress_hooks": [callback] if callback else [],
+        "outtmpl": save_dirpath + "/%(title)s.%(ext)s",
+        "postprocessors": [
+            {
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "mp3",
+            }
+        ],
+    }
+
+    with ydl.YoutubeDL(ydl_opts) as y:
+        info = y.extract_info(url, download=download)
+
+    return info
 
 
-def get_youtube_audiostreams(url, get_best_audio=False):
-    video = YouTube(url)
-
-    return video.getbestaudio() if get_best_audio else video.audiostreams
-
-
-def download_youtube_audiostream(audiostream, save_filepath=None, quiet=True, callback=None):
-    if save_filepath:
-        audiostream.download(save_filepath if save_filepath else None, quiet=quiet, callback=callback)
-    else:
-        audiostream.download()
+def get_package_version(package_name):
+    try:
+        output = subprocess.check_output([sys.executable, "-m", "pip", "show", package_name])
+        for line in output.decode("utf-8").split("\n"):
+            if line.startswith("Version:"):
+                return line.split(": ")[1]
+    except Exception:
+        return None
 
 
-def update_app(package_name="mp3-autotagger"):
+def update_package(package_name="mp3-autotagger"):
+    # Get the initial version
+    initial_version = get_package_version(package_name)
+    if initial_version is None:
+        return f"Error: Unable to determine the current version of {package_name}."
+
     try:
         subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", package_name])
     except subprocess.CalledProcessError as e:
         return f"Error occurred while updating {package_name}. Error: {e}"
+
+    # Get the version after update
+    updated_version = get_package_version(package_name)
+    if updated_version is None:
+        return f"Error: Unable to determine the updated version of {package_name}."
+
+    # Compare versions
+    if initial_version == updated_version:
+        return f"{package_name} is already at the latest version ({updated_version})."
     else:
-        return f"{package_name} updated successfully!"
+        return f"{package_name} updated successfully from version {initial_version} to {updated_version}!"
 
 
 def qt_get_open_files_and_dirs(parent=None, caption="", directory="", filter="", initialFilter="", options=None):

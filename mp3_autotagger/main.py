@@ -9,16 +9,14 @@ from PyQt5 import QtCore
 from PyQt5 import QtWidgets as qtw
 from PyQt5.QtGui import QPixmap
 
-from mp3_autotagger.exceptions import MP3AutotaggerError
 from mp3_autotagger.mp3 import MP3
 from mp3_autotagger.ui_main_window import Ui_MainWindow
 from mp3_autotagger.utils import (
-    convert2mp3,
-    download_youtube_audiostream,
-    get_youtube_audiostreams,
+    MP3AutotaggerException,
+    get_youtube_audiostream,
     qt_get_about_widget,
     qt_get_open_files_and_dirs,
-    update_app,
+    update_package,
 )
 
 
@@ -36,12 +34,12 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
 
         # Autotagger
         self.mp3_filepaths = []
-        self.log_folder = str(os.path.join(Path(__file__).parent.resolve(), "../logs"))
+        self.log_folder = str(Path(__file__).parent.resolve() / "../logs")  # TODO: Adapt to new folder
         self.current_track = None
         self.cover_bytes = None
 
         # Youtube2MP3
-        self.download_folder = str(os.path.join(Path.home(), "Downloads"))
+        self.download_folder = str(Path.home() / "Downloads")  # TODO: Adapt for Linux  (mkdir?)
 
         # Main window
         self._translate = QtCore.QCoreApplication.translate
@@ -121,7 +119,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
     # Main window
     def update_app(self):
         try:
-            status = update_app()
+            status = update_package()
             if status == "Already up to date.":
                 self.show_info_message(self._translate("Update App Window", "No new updates available", title="Update"))
             else:
@@ -132,7 +130,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
                         title="Update",
                     )
                 )
-        except MP3AutotaggerError("Update failed"):
+        except MP3AutotaggerException:
             self.show_error_message(message_md="Update failed!", title="Update")
 
     # Main window
@@ -253,11 +251,11 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
         try:
             self.current_track = MP3(filepath)
             self.label_autotagger_status.setText(self._translate("Main Window", ""))
-        except MP3AutotaggerError("Unable to load .mp3"):
+        except MP3AutotaggerException as e:
             self.unset_track_info()
             self.label_autotagger_status.setText(self._translate("Main Window", "Unable to load .mp3"))
             if raise_exception:
-                raise
+                raise MP3AutotaggerException(e)
 
     # Autotagger
     def find_tags(self, thread_shazam=True, raise_exception=False):
@@ -275,12 +273,12 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
             else:
                 self.current_track.update_tags_shazam(replace_info=self.checkBox_replace_info.isChecked())
             self.set_track_info()
-        except MP3AutotaggerError("Unexpected error finding tags with Shazam"):
+        except MP3AutotaggerException as e:
             self.label_autotagger_status.setText(
                 self._translate("Main Window", "Unexpected error finding tags with Shazam")
             )
             if raise_exception:
-                raise
+                raise MP3AutotaggerException(e)
 
         self.tabWidget.widget(0).setEnabled(True)
 
@@ -303,10 +301,10 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
                 )
             )
             self.label_autotagger_status.setText(self._translate("Main Window", "Saved succesfully"))
-        except MP3AutotaggerError("Unexpected error saving tags"):
+        except MP3AutotaggerException as e:
             self.label_autotagger_status.setText(self._translate("Main Window", "Unexpected error saving tags"))
             if raise_exception:
-                raise
+                raise MP3AutotaggerException(e)
 
     # Autotagger
     def find_save_all_tags(self):
@@ -321,7 +319,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
                     self.find_tags()
                     self.save_tags()
                     log.writelines({self.current_track.filepath + ": OK\n"})
-                except MP3AutotaggerError(f"Error tagging file {filepath}"):
+                except MP3AutotaggerException:
                     log.writelines({filepath + ": FAILED\n"})
 
                 self.progressBar_find_save_all_tags.setValue(int((i + 1) / n_files * 100))
@@ -335,32 +333,27 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
     def get_yt_audio_info(self):
         self.label_yt_status.clear()
         self.lineEdit_video_title.clear()
-        self.comboBox_audio_select.clear()
+        self.lineEdit_audio_details.clear()
 
         try:
-            get_best_audio = self.checkBox_get_bestaudio.isChecked()
-            self.audiostreams = get_youtube_audiostreams(self.lineEdit_url.text(), get_best_audio=get_best_audio)
-            if get_best_audio:
-                self.audiostreams = [self.audiostreams]
+            audiostream = get_youtube_audiostream(self.lineEdit_url.text(), download=False)
 
-            for aust in self.audiostreams:
-                self.comboBox_audio_select.addItem(
-                    f"{aust.extension} | {aust.bitrate} kbps | {round(aust.get_filesize() / 1e6, 2)} MB"
-                )
-
-            self.lineEdit_video_title.setText(self._translate("Main Window", self.audiostreams[0].title))
-            self.comboBox_audio_select.setEnabled(True)
+            self.lineEdit_audio_details.setText(
+                f"{audiostream['ext']} | {audiostream['abr']} kbps | {round(audiostream['filesize'] / 1e6, 2)} MB"
+            )
+            self.lineEdit_video_title.setText(self._translate("Main Window", audiostream["title"]))
+            self.lineEdit_audio_details.setEnabled(True)
             self.pushButton_download.setEnabled(True)
             self.label_yt_status.setText(self._translate("Main Window", "Ready to download"))
 
         except ValueError:
             self.label_yt_status.setText(self._translate("Main Window", "Bad URL"))
-            self.comboBox_audio_select.setEnabled(False)
+            self.lineEdit_audio_details.setEnabled(False)
             self.pushButton_download.setEnabled(False)
 
-        except MP3AutotaggerError("Unexpected error"):
+        except MP3AutotaggerException:
             self.label_yt_status.setText(self._translate("Main Window", "Unexpected Error"))
-            self.comboBox_audio_select.setEnabled(False)
+            self.lineEdit_audio_details.setEnabled(False)
             self.pushButton_download.setEnabled(False)
 
     # Youtube2MP3
@@ -372,35 +365,19 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
     def download_yt_audio(self):
         self.tabWidget.widget(1).setEnabled(False)
 
-        selected_audiostream = self.audiostreams[self.comboBox_audio_select.currentIndex()]
-
         error_text = None
         try:
             thread_download_youtube = Thread(
-                target=download_youtube_audiostream,
-                args=(selected_audiostream, self.download_folder),
+                target=get_youtube_audiostream,
+                args=(self.download_folder, True),
                 kwargs={"callback": self.callback_download_yt},
             )
             thread_download_youtube.start()
-        except MP3AutotaggerError("Error downloading audio"):
+        except MP3AutotaggerException:
             error_text = "Error Downloading"
 
         while thread_download_youtube.is_alive():
             qtw.QApplication.processEvents()
-
-        if self.checkBox_convert_audio_to_mp3.isChecked() and not error_text:
-            self.label_yt_status.setText(
-                self._translate("Main Window", "Download successful! Converting audio to .mp3...")
-            )
-            filepath = os.path.join(self.download_folder, selected_audiostream.filename)
-            try:
-                thread_convert2mp3 = Thread(target=convert2mp3, args=(filepath, selected_audiostream.extension))
-                thread_convert2mp3.start()
-                while thread_convert2mp3.is_alive():
-                    qtw.QApplication.processEvents()
-            except MP3AutotaggerError("Unexpected error converting audio to .mp3"):
-                if not error_text:
-                    error_text = "Unexpected error converting audio to .mp3"
 
         if error_text:
             self.label_yt_status.setText(self._translate("Main Window", error_text))

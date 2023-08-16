@@ -31,7 +31,7 @@ My dad wanted a tool to automatically tag all the .mp3 files from his old music 
 ```
 conda create -y -n mp3-autotagger python=3.11.4 --no-default-packages
 conda activate mp3-autotagger
-conda install ffmpeg
+conda install -y ffmpeg
 python -m pip install --upgrade pip
 pip install mp3-autotagger
 ```
