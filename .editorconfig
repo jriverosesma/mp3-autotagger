@@ -1,0 +1,25 @@
+# Top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Set default charset
+charset = utf-8
+
+# 4-space tabs for Python files
+[*.py]
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+# 2-space tabs for YAML files (often used for CI/CD configs)
+[*.yml, *.yaml]
+indent_style = space
+indent_size = 2
+
+# Markdown files often have trailing whitespace for line breaks
+[*.md]
+trim_trailing_whitespace = false
