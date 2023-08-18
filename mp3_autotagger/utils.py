@@ -1,5 +1,7 @@
 import subprocess
 import sys
+from pathlib import Path
+from typing import Any, Callable
 
 import yt_dlp as ydl
 from PyQt5 import QtCore
@@ -14,17 +16,23 @@ class MP3AutotaggerException(Exception):
     pass
 
 
-async def shazam_find_track_info(filepath):
+async def shazam_find_track_info(filepath: Path) -> dict[str, Any]:
     return await shazam.recognize_song(filepath)
 
 
-def get_youtube_audiostream(url, save_dirpath="", download=True, quiet=True, callback=None):
+def get_youtube_audiostream(
+    url: str,
+    save_dirpath: Path = Path("."),
+    download: bool = True,
+    quiet: bool = True,
+    callback: Callable | None = None,
+) -> dict[str, Any] | None:
     ydl_opts = {
         "quiet": quiet,
         "format": "bestaudio/best",
         "noplaylist": True,
         "progress_hooks": [callback] if callback else [],
-        "outtmpl": save_dirpath + "/%(title)s.%(ext)s",
+        "outtmpl": str(save_dirpath / "%(title)s.%(ext)s"),
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
@@ -39,20 +47,19 @@ def get_youtube_audiostream(url, save_dirpath="", download=True, quiet=True, cal
     return info
 
 
-def get_package_version(package_name):
+def get_package_version(package_name: str) -> str | None:
     try:
         output = subprocess.check_output([sys.executable, "-m", "pip", "show", package_name])
-        for line in output.decode("utf-8").split("\n"):
+        for line in output.decode().splitlines():
             if line.startswith("Version:"):
                 return line.split(": ")[1]
-    except Exception:
+    except subprocess.CalledProcessError:
         return None
 
 
-def update_package(package_name="mp3-autotagger"):
-    # Get the initial version
+def update_package(package_name: str = "mp3-autotagger") -> str:
     initial_version = get_package_version(package_name)
-    if initial_version is None:
+    if not initial_version:
         return f"Error: Unable to determine the current version of {package_name}."
 
     try:
@@ -60,38 +67,38 @@ def update_package(package_name="mp3-autotagger"):
     except subprocess.CalledProcessError as e:
         return f"Error occurred while updating {package_name}. Error: {e}"
 
-    # Get the version after update
     updated_version = get_package_version(package_name)
-    if updated_version is None:
+    if not updated_version:
         return f"Error: Unable to determine the updated version of {package_name}."
 
-    # Compare versions
     if initial_version == updated_version:
         return f"{package_name} is already at the latest version ({updated_version})."
-    else:
-        return f"{package_name} updated successfully from version {initial_version} to {updated_version}!"
+
+    return f"{package_name} updated successfully from version {initial_version} to {updated_version}!"
 
 
-def qt_get_open_files_and_dirs(parent=None, caption="", directory="", filter="", initialFilter="", options=None):
+def qt_get_open_files_and_dirs(
+    parent: qtw.QWidget | None = None,
+    caption: str = "",
+    directory: str = "",
+    filter: str = "",
+    initialFilter: str = "",
+    options: tuple[qtw.QFileDialog.Options, qtw.QFileDialog.Option] | None = None,
+) -> list[str]:
     _translate = QtCore.QCoreApplication.translate
 
     def updateText():
-        selected = []
-        for index in view.selectionModel().selectedRows():
-            selected.append(index.data())
+        selected = [index.data() for index in view.selectionModel().selectedRows()]
         lineEdit.setText(_translate("Main Window", " ".join(selected)))
 
     dialog = qtw.QFileDialog(parent, windowTitle=caption)
     dialog.setFileMode(dialog.ExistingFiles)
-    if options:
-        dialog.setOptions(options)
+    dialog.setOptions(*options or ())
     dialog.setOption(dialog.DontUseNativeDialog, True)
-    if directory:
-        dialog.setDirectory(directory)
-    if filter:
-        dialog.setNameFilter(filter)
-        if initialFilter:
-            dialog.selectNameFilter(initialFilter)
+    dialog.setDirectory(directory)
+    dialog.setNameFilter(filter)
+    if initialFilter:
+        dialog.selectNameFilter(initialFilter)
 
     dialog.accept = lambda: qtw.QDialog.accept(dialog)
 
@@ -102,12 +109,10 @@ def qt_get_open_files_and_dirs(parent=None, caption="", directory="", filter="",
     lineEdit = dialog.findChild(qtw.QLineEdit)
     dialog.directoryEntered.connect(lambda: lineEdit.setText(_translate("Main Window", "")))
 
-    result = dialog.exec_()
-    if result:
-        return dialog.selectedFiles()
+    return dialog.selectedFiles() if dialog.exec_() else []
 
 
-def qt_get_about_widget():
+def qt_get_about_widget() -> qtw.QMessageBox:
     about_message_box = qtw.QMessageBox()
     about_message_box.setWindowIcon(QIcon("assets/main_icon.png"))
     about_message_box.setIconPixmap(QPixmap("assets/main_icon.png").scaled(75, 75))
