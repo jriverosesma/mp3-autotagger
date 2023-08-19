@@ -4,8 +4,8 @@
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate mp3-autotagger
 
-# Convert the UI file to a Python file
-pyuic5 gui/main_window.ui -o mp3_autotagger/gui/ui.py
+# Run mp3-autotagger
+mp3-autotagger
 
 # Deactivate the conda environment
 conda deactivate

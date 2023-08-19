@@ -1,8 +1,6 @@
-cd "%~dp0.."
-conda create -y -p .venv python=3.11.4 --no-default-packages
-call conda activate "%~dp0..\.venv"
+conda create -y -n mp3-autotagger python=3.10.12 --no-default-packages
+call conda activate mp3-autotagger
 call conda install ffmpeg
 python -m pip install --upgrade pip
-pip install .
+pip install mp3-autotagger
 call conda deactivate
-cd "%~dp0.."

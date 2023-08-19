@@ -1,5 +1,3 @@
-cd "%~dp0.."
-call conda activate "%~dp0..\.venv"
+call conda activate mp3-autotagger
 mp3-autotagger
 call conda deactivate
-cd "%~dp0.."
