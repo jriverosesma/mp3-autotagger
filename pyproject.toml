@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "mp3_autotagger"
 version = "0.1.0"
-description = "A Tinder ML-powered auto swiper."
+description = "A simple application to tag .mp3 files automatically and more."
 authors = ["Juan Rivero Sema <jriverosesma@gmail.com>"]
 readme = "README.md"
-packages = [{include = "mp3_autotagger"}]
+include = ["assets/*", "translations/*.qm"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
@@ -14,7 +14,7 @@ classifiers = [
 "Homepage" = "https://github.com/jriverosesma/mp3-autotagger"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10.12"
 pyqt5 = "^5.15.9"
 mutagen = "^1.46.0"
 shazamio = "^0.4.0.1"
