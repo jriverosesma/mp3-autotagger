@@ -4,7 +4,7 @@
 <context>
     <name>About Window</name>
     <message>
-        <location filename="../mp3_autotagger/main.py" line="100"/>
+        <location filename="../mp3_autotagger/gui/main_window.py" line="101"/>
         <source>About MP3 Autotagger</source>
         <translation>Acerca de MP3 Autotagger</translation>
     </message>
@@ -19,15 +19,15 @@
     <message>
         <location filename="../mp3_autotagger/main.py" line="175"/>
         <source>{len(self.mp3_filepaths)} .mp3 files found</source>
-        <translation>{len(self.mp3_filepaths)} .mp3 archivos encontrados</translation>
+        <translation type="obsolete">{len(self.mp3_filepaths)} .mp3 archivos encontrados</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/main.py" line="256"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="210"/>
         <source>Unable to load .mp3</source>
         <translation>Imposible cargar el archivo.mp3</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/main.py" line="277"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="232"/>
         <source>Unexpected error finding tags with Shazam</source>
         <translation>Error inesperado encontrando etiquetas con Shazam</translation>
     </message>
@@ -37,34 +37,34 @@
         <translation type="obsolete">{self.listWidget_tracks.currentRow()}. {os.path.basename(self.current_track.filepath)}</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/main.py" line="303"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="295"/>
         <source>Saved succesfully</source>
         <translation>Guardado correctamente</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/main.py" line="305"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="297"/>
         <source>Unexpected error saving tags</source>
         <translation>Error inesperado guardando etiquetas</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/main.py" line="318"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="361"/>
         <source>Tagging files...</source>
         <translation>Etiquetando archivos...</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/main.py" line="347"/>
+        <location filename="../mp3_autotagger/gui/youtube2mp3_tab.py" line="59"/>
         <source>Ready to download</source>
         <translation>Preparado para descargar</translation>
     </message>
     <message>
         <location filename="../mp3_autotagger/main.py" line="350"/>
         <source>Bad URL</source>
-        <translation>URL inválida</translation>
+        <translation type="obsolete">URL inválida</translation>
     </message>
     <message>
         <location filename="../mp3_autotagger/main.py" line="355"/>
         <source>Unexpected Error</source>
-        <translation>Error inesperado</translation>
+        <translation type="obsolete">Error inesperado</translation>
     </message>
     <message>
         <location filename="../src/main.py" line="385"/>
@@ -74,98 +74,123 @@
     <message>
         <location filename="../mp3_autotagger/main.py" line="385"/>
         <source>Success!</source>
-        <translation>¡Éxito!</translation>
+        <translation type="obsolete">¡Éxito!</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="94"/>
+        <source>{len(self._mp3_filepaths)} .mp3 files found</source>
+        <translation>{len(self._mp3_filepaths)} archivos .mp3 encontrados</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="166"/>
+        <source>Error adding new cover</source>
+        <translation>Error añadiendo nueva carátula</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="229"/>
+        <source>Song not found</source>
+        <translation>Canción no encontrada</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="330"/>
+        <source>Done. Log saved to {log_filepath}</source>
+        <translation>Terminado. Registro guardado en {log_filepath}</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/youtube2mp3_tab.py" line="155"/>
+        <source>Success! Audio saved to {self._download_folder}</source>
+        <translation>¡Éxito! Audio guardado en {self._download_folder}</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="328"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="359"/>
         <source>MP3 Autotagger</source>
         <translation>MP3 Autotagger</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="334"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="369"/>
         <source>Artist</source>
         <translation>Artista</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="347"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="370"/>
         <source>Save tags</source>
         <translation>Guardar etiquetas</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="340"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="365"/>
         <source>Title</source>
         <translation>Titulo</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="338"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="367"/>
         <source>Genre</source>
         <translation>Género</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="330"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="361"/>
         <source>Year</source>
         <translation>Año</translation>
     </message>
     <message>
         <location filename="../mp3_autotagger/ui_main_window.py" line="331"/>
         <source>MP3 info</source>
-        <translation>Información del MP3</translation>
+        <translation type="obsolete">Información del MP3</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="336"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="374"/>
         <source>Browse</source>
         <translation>Buscar</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="345"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="377"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="342"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="378"/>
         <source>Click to add new cover</source>
         <translation>Click para añadir nueva portada</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="332"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="375"/>
         <source>MP3 files list</source>
         <translation>Lista de archivos MP3</translation>
     </message>
     <message>
         <location filename="../mp3_autotagger/ui_main_window.py" line="335"/>
         <source>Replace existing information</source>
-        <translation>Reemplazar información existente</translation>
+        <translation type="obsolete">Reemplazar información existente</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="341"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="373"/>
         <source>Find tags</source>
         <translation>Encontrar etiquetas</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="346"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="371"/>
         <source>Find and save tags for all files</source>
         <translation>Encontrar y guardar etiquetas para todos los archivos</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="348"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="384"/>
         <source>Autotagger</source>
         <translation>Autotagger</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="353"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="389"/>
         <source>Video title</source>
         <translation>Título de video</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="349"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="392"/>
         <source>Enter YouTube URL</source>
         <translation>Introducir URL de video de Youtube</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="354"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="385"/>
         <source>Download</source>
         <translation>Descargar</translation>
     </message>
@@ -185,27 +210,27 @@
         <translation type="obsolete">Obtener mejor audio</translation>
     </message>
     <message>
-        <location filename="../src/ui_main_window.py" line="355"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="391"/>
         <source>Convert audio to .mp3</source>
-        <translation type="obsolete">Convertir audio a .mp3</translation>
+        <translation>Convertir audio a .mp3</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="355"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="386"/>
         <source>Video URL</source>
         <translation>URL de video</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="350"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="393"/>
         <source>Get audio information</source>
         <translation>Obtener información de audio</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="356"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="395"/>
         <source>Youtube2MP3</source>
         <translation>Youtube2MP3</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="357"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="396"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
@@ -215,44 +240,87 @@
         <translation type="obsolete">Idioma</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="359"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="398"/>
         <source>About</source>
         <translation>Acerca de MP3 Autotagger</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="360"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="399"/>
         <source>English</source>
         <translation>Inglés</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="361"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="400"/>
         <source>Spanish</source>
         <translation>Español</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="363"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="402"/>
         <source>Check for updates</source>
         <translation>Buscar actualizaciones</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="343"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="379"/>
         <source>Cover</source>
         <translation>Portada</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="358"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="397"/>
         <source>Language</source>
         <translation>Idioma</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="351"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="387"/>
         <source>Audio information</source>
         <translation>Información de audio</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/ui_main_window.py" line="352"/>
+        <location filename="../mp3_autotagger/gui/ui.py" line="388"/>
         <source>Audio details</source>
         <translation>Detalles de audio</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/ui.py" line="362"/>
+        <source>Rename file as &lt;ARTIST&gt; - &lt;Title&gt;</source>
+        <translation>Renombrar archivo a &lt;ARTISTA&gt; - &lt;Título&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/ui.py" line="363"/>
+        <source>Rename file</source>
+        <translation>Renombrar archivo</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/ui.py" line="372"/>
+        <source>MP3 details</source>
+        <translation>Detalles de MP3</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/ui.py" line="380"/>
+        <source>Replace existing tags when finding tags automatically</source>
+        <translation>Remplazar etiquetas existentes cuando se buscan las etiquetas automáticamente</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/ui.py" line="383"/>
+        <source>Replace existing tags</source>
+        <translation>Remplazar etiquetas existentes</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/ui.py" line="390"/>
+        <source>Check to convert original audio to .mp3</source>
+        <translation>Activar casilla para convertir audio original en .mp3</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/ui.py" line="394"/>
+        <source>Video thumbnail</source>
+        <translation>Miniatura de video</translation>
+    </message>
+</context>
+<context>
+    <name>Update App Window</name>
+    <message>
+        <location filename="../mp3_autotagger/gui/main_window.py" line="141"/>
+        <source>No new updates available</source>
+        <translation>No hay nuevas actualizaciones disponibles</translation>
     </message>
 </context>
 </TS>
