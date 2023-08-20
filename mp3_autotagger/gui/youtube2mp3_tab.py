@@ -10,11 +10,17 @@ from yt_dlp.utils import DownloadError
 
 from ..utils.youtube import get_youtube_audiostream
 
-B_TO_MIB: int = 1 / (1024 * 1024)
+B_TO_MIB: int = 1 / (1024 * 1024)  # Bytes to Mebibyte conversion constant
 
 
 class Youtube2MP3GUI:
     def __init__(self, gui) -> None:
+        """Initialize the Youtube2MP3 GUI.
+
+        Args:
+            gui (MainWindowGUI): Main window GUI object.
+        """
+
         self._gui = gui
         self._download_folder: Path = Path.home() / "mp3-autotagger/youtube"
         self._download_folder.mkdir(parents=True, exist_ok=True)
@@ -38,7 +44,11 @@ class Youtube2MP3GUI:
         self._gui.progressBar_download_signal.emit(0)
 
     def _set_error_state(self, message: str) -> None:
-        """Set the UI elements to reflect an error state."""
+        """Set the UI elements to reflect an error state.
+
+        Args:
+            message (str): The error message to display.
+        """
 
         self._reset_ui_elements()
         self._gui.label_yt_status.setText(self._gui.translate("Main Window", message))
@@ -51,18 +61,35 @@ class Youtube2MP3GUI:
         self._gui.pushButton_download.setEnabled(True)
 
     def _get_thumbnail(self, audiostream: dict[str, Any]) -> bytes:
+        """Retrieve thumbnail bytes for the given audiostream.
+
+        Args:
+            audiostream (dict[str, Any]): The YouTube audio stream info.
+
+        Returns:
+            bytes: The thumbnail bytes.
+        """
+
         url = audiostream["thumbnail"]
         response = requests.get(url)
         response.raise_for_status()
         return response.content
 
     def _set_thumbnail(self, audiostream: dict[str, Any]) -> None:
+        """Set the thumbnail for the UI using the given audiostream.
+
+        Args:
+            audiostream (dict[str, Any]): The YouTube audio stream info.
+        """
+
         thumbnail_bytes = self._get_thumbnail(audiostream)
         thumbnail = QPixmap()
         thumbnail.loadFromData(io.BytesIO(thumbnail_bytes).read())
         self._gui.label_video_thumbnail.setPixmap(thumbnail)
 
     def get_yt_audio_info(self) -> None:
+        """Retrieve and display YouTube audio info on the GUI."""
+
         self._reset_ui_elements()
 
         try:
@@ -81,6 +108,12 @@ class Youtube2MP3GUI:
             self._set_error_state("Unexpected Error")
 
     def callback_download_yt(self, d: dict[str, Any]) -> None:
+        """Callback function to update UI during YouTube audio download.
+
+        Args:
+            d (dict[str, Any]): Download info dictionary.
+        """
+
         percent = d.get("downloaded_bytes", 1) / d.get("total_bytes", 1)
         percent = 0 if percent is None else round(percent * 100)
         eta = d.get("eta", 0)
@@ -95,6 +128,8 @@ class Youtube2MP3GUI:
         self._gui.progressBar_download_signal.emit(percent)
 
     def download_yt_audio(self) -> None:
+        """Download YouTube audio and update the GUI."""
+
         self._gui.tabWidget.widget(1).setEnabled(False)
         error_text = None
 

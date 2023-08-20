@@ -16,7 +16,7 @@ def test_update_package(package_name: str) -> None:
     if initial_version is None:
         assert (
             status
-            == f"Error: Unable to determine the current version of {package_name}. Make sure the package is installed"
+            == f"Error: Unable to determine the current version of {package_name}. Make sure the package is installed."
         )
     elif updated_version == initial_version:
         assert status == f"{package_name} is already at the latest version ({updated_version})."

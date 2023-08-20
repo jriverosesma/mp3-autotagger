@@ -3,9 +3,20 @@ from pathlib import Path
 
 
 def get_resource_paths(package: str, *resource_names: str) -> dict[str, Path]:
+    """
+    Fetch the file paths of multiple resources from a specified package.
+
+    Args:
+        package (str): Name of the package containing the resources.
+        *resource_names (str): Names of the resources (files) whose paths are required.
+
+    Returns:
+        dict[str, Path]: Dictionary mapping resource names to their respective file paths.
+    """
     resource_paths: dict[str, Path] = {}
 
     for resource_name in resource_names:
+        # Fetch and store the path for each resource
         with resource_path(package, resource_name) as data_path:
             resource_paths[resource_name] = data_path
 

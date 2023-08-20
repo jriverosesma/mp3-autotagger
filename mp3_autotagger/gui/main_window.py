@@ -79,7 +79,13 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
         self.pushButton_download.pressed.connect(self._youtube2mp3_gui.download_yt_audio)
 
     def _retranslate(self, qm_filepath: str = None) -> None:
-        """Reload the UI translations based on the provided .qm file."""
+        """
+        Reload the UI translations based on the provided .qm file.
+
+        Args:
+            qm_filepath (str, optional): Path to the .qm file containing translations. If not provided,
+                removes the translator. Defaults to None.
+        """
 
         if qm_filepath:
             self._trans.load(qm_filepath)
@@ -104,12 +110,25 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
         about_message_box.exec()
 
     def _show_info_message(self, message_md: str, title: str = "Info") -> None:
-        """Display an informational message box."""
+        """
+        Display an informational message box.
+
+        Args:
+            message_md (str): The message (in markdown format) to display.
+            title (str, optional): The title of the message box. Defaults to "Info".
+        """
 
         qtw.QMessageBox.information(self, title, message_md)
 
     def _show_error_message(self, message_md: str = "Unknown Error", title: str = "Error") -> None:
-        """Display an error message box."""
+        """
+        Display an error message box.
+
+        Args:
+            message_md (str, optional): The error message (in markdown format) to display.
+                Defaults to "Unknown Error".
+            title (str, optional): The title of the error message box. Defaults to "Error".
+        """
 
         qtw.QMessageBox.critical(self, title, message_md)
 
