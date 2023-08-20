@@ -6,7 +6,7 @@ import pytest
 from mutagen.mp3 import HeaderNotFoundError
 from PIL import Image
 
-from mp3_autotagger.mp3 import MP3
+from mp3_autotagger.utils.mp3 import MP3
 
 
 @pytest.fixture(scope="class")
@@ -21,17 +21,8 @@ def test_example_0(setup_class_data: tuple[Path, Path]) -> None:
     assets_dirpath, tmp_filepath = setup_class_data
     shutil.copyfile(assets_dirpath / "example_0.mp3", tmp_filepath)
     track = MP3(tmp_filepath)
-    track.update_tags_shazam()
-    track.save_as(tmp_filepath)
-    new_track = MP3(tmp_filepath)
-    cover = Image.open(io.BytesIO(new_track.tags["APIC"]))
-    tmp_cover_filepath = assets_dirpath / "tmp_cover.png"
-    cover.save(tmp_cover_filepath)
-
-    assert new_track.tags["TPE1"] == "RED HOT CHILI PEPPERS"
-    shutil.copyfile(assets_dirpath / "example_0.mp3", tmp_filepath)
-    track = MP3(tmp_filepath)
-    track.update_tags_shazam()
+    track.tags["TPE1"] = "RED-HOT-CHILI-PEPPERS"
+    track.update_tags_shazam(replace_existing_tags=True)
     track.save_as(tmp_filepath)
     new_track = MP3(tmp_filepath)
     cover = Image.open(io.BytesIO(new_track.tags["APIC"]))
@@ -61,7 +52,7 @@ def test_example_1(setup_class_data: tuple[Path, Path]) -> None:
     assert track.tags["TDRC"] == "1968"
     assert track.tags["APIC"] != b""
 
-    track.update_tags_shazam(replace_info=False)
+    track.update_tags_shazam()
     track.save_as(tmp_filepath)
     new_track = MP3(tmp_filepath)
 

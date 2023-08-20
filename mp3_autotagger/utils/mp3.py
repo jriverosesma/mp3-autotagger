@@ -7,7 +7,7 @@ from mutagen.id3 import APIC, ID3, TALB, TCON, TDRC, TIT2, TPE1, ID3NoHeaderErro
 from mutagen.mp3 import MP3 as MP3_mutagen
 from mutagen.mp3 import HeaderNotFoundError
 
-from mp3_autotagger.utils import shazam_find_track_info
+from mp3_autotagger.utils.shazam import shazam_find_track_info
 
 
 class MP3:
@@ -55,8 +55,11 @@ class MP3:
         if tag_class:
             self.audiotags.add(tag_class(encoding=3, text=new_value))
 
-    def update_tags_shazam(self, replace_info: bool = True) -> None:
+    def update_tags_shazam(self, replace_existing_tags: bool = False) -> bool:
         shazam_out = asyncio.run(shazam_find_track_info(self.filepath))
+
+        if not shazam_out["matches"]:
+            return False
 
         shazam_data_mapping = {
             "TPE1": shazam_out["track"]["subtitle"].upper(),
@@ -68,14 +71,16 @@ class MP3:
         }
 
         for tag_name, value in shazam_data_mapping.items():
-            if replace_info or not self.tags[tag_name]:
+            if replace_existing_tags or not self.tags[tag_name]:
                 self.tags[tag_name] = value
+
+        return True
 
     def save_as(self, new_filepath: Path = None) -> None:
         for tag_name, value in self.tags.items():
             self._write_tag(tag_name, value)
         self.audiotags.save(self.filepath, v2_version=3)
 
-        if not new_filepath:
-            new_filepath = self.filepath.parent / f"{self.tags['TPE1']} - {self.tags['TIT2']}.mp3"
-        self.filepath.rename(new_filepath)
+        if new_filepath:
+            self.filepath.rename(new_filepath)
+            self.filepath = new_filepath

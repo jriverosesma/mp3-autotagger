@@ -26,15 +26,19 @@ Enter URL from Youtube video and download audio as an .mp3 file.
 My dad wanted a tool to automatically tag all the .mp3 files from his old music library and easily download audio from Youtube videos. I developed this especifically for my dad needs only :)
 
 ## Installation
-1. Prerequisite: Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (more lightweight) or [Anaconda](https://www.anaconda.com/).
+1. Prerequisite:
+1.1 Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (more lightweight) or [Anaconda](https://www.anaconda.com/).
+
 2. Open Anaconda Prompt and run the following commands:
 ```
-conda create -y -n mp3-autotagger python=3.11.4 --no-default-packages
+conda create -y -n mp3-autotagger python=3.10.12 --no-default-packages
 conda activate mp3-autotagger
 conda install -y ffmpeg
 python -m pip install --upgrade pip
 pip install mp3-autotagger
 ```
+
+⚠️ **Make sure to install `ffmpeg` with the above command** ⚠️
 
 ## Usage
 1. Open Anaconda Prompt and run the following command to activate the conda environment: `conda activate mp3-autotagger`
