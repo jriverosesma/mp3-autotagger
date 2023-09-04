@@ -138,17 +138,20 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
         try:
             status = update_package()
             if status.startswith("mp3-autotagger is already at the latest version"):
-                self._show_info_message(self.translate("Update App Window", "No new updates available"), title="Update")
+                self._show_info_message(
+                    self.translate("Update App Window", "No new updates available"),
+                    title=self.translate("Update"),
+                )
             else:
                 self._show_info_message(
                     self.translate(
                         "Update App Window",
                         "<p>Updated successfully!</p><p>Restart application for changes to take effect.</p>",
                     ),
-                    title="Update",
+                    self.translate("Update"),
                 )
         except Exception:
-            self._show_error_message(message_md="Update failed!", title="Update")
+            self._show_error_message(message_md=self.translate("Update failed!"), title=self.translate("Update"))
 
     def _set_language_english(self) -> None:
         """Set the application language to English."""
@@ -158,4 +161,5 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
     def _set_language_spanish(self) -> None:
         """Set the application language to Spanish."""
 
-        self._retranslate(str(translation_eng_es_path))
+        # self._retranslate(str(translation_eng_es_path))
+        self._retranslate("translations/eng-es.qm")
