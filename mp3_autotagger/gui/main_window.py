@@ -1,7 +1,7 @@
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets as qtw
 
-from ..utils.assets import translation_eng_es_path
+from ..utils.assets import RESOURCE_PATHS
 from ..utils.package import update_package
 from ..utils.qt import qt_get_about_widget
 from .mp3_autotagger_tab import MP3AutotaggerGUI
@@ -164,5 +164,4 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
     def _set_language_spanish(self) -> None:
         """Set the application language to Spanish."""
 
-        # self._retranslate(str(translation_eng_es_path))
-        self._retranslate("eng-es.qm")
+        self._retranslate(RESOURCE_PATHS["eng-es.qm"])

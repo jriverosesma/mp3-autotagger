@@ -7,7 +7,7 @@ from threading import Thread
 from PyQt5 import QtWidgets as qtw
 from PyQt5.QtGui import QPixmap
 
-from ..utils.assets import no_cover_path
+from ..utils.assets import RESOURCE_PATHS
 from ..utils.mp3 import MP3
 from ..utils.qt import qt_get_open_files_and_dirs
 
@@ -37,7 +37,7 @@ class MP3AutotaggerGUI:
         if self._current_track.tags["APIC"]:
             self._cover_bytes = self._current_track.tags["APIC"]
         else:
-            with open(no_cover_path, mode="rb") as f:
+            with open(RESOURCE_PATHS["no_cover.jpg"], mode="rb") as f:
                 self._cover_bytes = f.read()
         self._set_cover()
 

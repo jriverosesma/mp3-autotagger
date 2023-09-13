@@ -2,7 +2,7 @@ from PyQt5 import QtCore
 from PyQt5 import QtWidgets as qtw
 from PyQt5.QtGui import QIcon, QPixmap
 
-from .assets import main_icon_path
+from .assets import RESOURCE_PATHS
 
 
 def qt_get_open_files_and_dirs(
@@ -74,8 +74,8 @@ def qt_get_about_widget() -> qtw.QMessageBox:
 
     about_message_box = qtw.QMessageBox()
     # Set the main icon for the about message box
-    about_message_box.setWindowIcon(QIcon(str(main_icon_path)))
+    about_message_box.setWindowIcon(QIcon(RESOURCE_PATHS["main_icon.png"]))
     # Set a scaled pixmap of the main icon as the main icon of the message box
-    about_message_box.setIconPixmap(QPixmap(str(main_icon_path)).scaled(75, 75))
+    about_message_box.setIconPixmap(QPixmap(RESOURCE_PATHS["main_icon.png"]).scaled(75, 75))
 
     return about_message_box
