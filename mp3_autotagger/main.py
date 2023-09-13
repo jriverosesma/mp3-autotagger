@@ -11,6 +11,5 @@ def main() -> None:
 
     gui: GUI = GUI()
     gui.show()
-    gui.label_cover.setMinimumHeight(0)  # Reset cover minimum height after showing main window
 
     sys.exit(app.exec_())
