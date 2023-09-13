@@ -165,4 +165,4 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
         """Set the application language to Spanish."""
 
         # self._retranslate(str(translation_eng_es_path))
-        self._retranslate("translations/eng-es.qm")
+        self._retranslate("eng-es.qm")
