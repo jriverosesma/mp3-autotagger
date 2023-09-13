@@ -4,9 +4,9 @@
 <context>
     <name>About Window</name>
     <message>
-        <location filename="../mp3_autotagger/gui/main_window.py" line="101"/>
+        <location filename="../mp3_autotagger/gui/main_window.py" line="95"/>
         <source>About MP3 Autotagger</source>
-        <translation>Acerca de MP3 Autotagger</translation>
+        <translation type="obsolete">Acerca de MP3 Autotagger</translation>
     </message>
     <message>
         <location filename="../src/main.py" line="104"/>
@@ -22,12 +22,12 @@
         <translation type="obsolete">{len(self.mp3_filepaths)} .mp3 archivos encontrados</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="210"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="141"/>
         <source>Unable to load .mp3</source>
         <translation>Imposible cargar el archivo.mp3</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="232"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="155"/>
         <source>Unexpected error finding tags with Shazam</source>
         <translation>Error inesperado encontrando etiquetas con Shazam</translation>
     </message>
@@ -37,22 +37,22 @@
         <translation type="obsolete">{self.listWidget_tracks.currentRow()}. {os.path.basename(self.current_track.filepath)}</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="295"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="195"/>
         <source>Saved succesfully</source>
         <translation>Guardado correctamente</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="297"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="197"/>
         <source>Unexpected error saving tags</source>
         <translation>Error inesperado guardando etiquetas</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="361"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="241"/>
         <source>Tagging files...</source>
         <translation>Etiquetando archivos...</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/gui/youtube2mp3_tab.py" line="59"/>
+        <location filename="../mp3_autotagger/gui/youtube2mp3_tab.py" line="49"/>
         <source>Ready to download</source>
         <translation>Preparado para descargar</translation>
     </message>
@@ -77,29 +77,49 @@
         <translation type="obsolete">¡Éxito!</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="94"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="69"/>
         <source>{len(self._mp3_filepaths)} .mp3 files found</source>
         <translation>{len(self._mp3_filepaths)} archivos .mp3 encontrados</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="166"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="122"/>
         <source>Error adding new cover</source>
         <translation>Error añadiendo nueva carátula</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="229"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="152"/>
         <source>Song not found</source>
         <translation>Canción no encontrada</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="330"/>
+        <location filename="../mp3_autotagger/gui/mp3_autotagger_tab.py" line="227"/>
         <source>Done. Log saved to {log_filepath}</source>
-        <translation>Terminado. Registro guardado en {log_filepath}</translation>
+        <translation>Hecho. Log guardado en {log_filepath}</translation>
     </message>
     <message>
-        <location filename="../mp3_autotagger/gui/youtube2mp3_tab.py" line="155"/>
+        <location filename="../mp3_autotagger/gui/youtube2mp3_tab.py" line="120"/>
         <source>Success! Audio saved to {self._download_folder}</source>
         <translation>¡Éxito! Audio guardado en {self._download_folder}</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/main_window.py" line="95"/>
+        <source>About MP3 Autotagger</source>
+        <translation>Acerca de MP3 Autotagger</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/main_window.py" line="122"/>
+        <source>No new updates available</source>
+        <translation>No hay nuevas actualizaciones disponibles</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/main_window.py" line="135"/>
+        <source>Update failed!</source>
+        <translation>Error en la actualización</translation>
+    </message>
+    <message>
+        <location filename="../mp3_autotagger/gui/main_window.py" line="135"/>
+        <source>Update</source>
+        <translation>Actualización</translation>
     </message>
 </context>
 <context>
@@ -297,17 +317,17 @@
     <message>
         <location filename="../mp3_autotagger/gui/ui.py" line="380"/>
         <source>Replace existing tags when finding tags automatically</source>
-        <translation>Remplazar etiquetas existentes cuando se buscan las etiquetas automáticamente</translation>
+        <translation>Reemplazar etiquetas existentes cuando las etiquetas se buscan automáticamente</translation>
     </message>
     <message>
         <location filename="../mp3_autotagger/gui/ui.py" line="383"/>
         <source>Replace existing tags</source>
-        <translation>Remplazar etiquetas existentes</translation>
+        <translation>Reemplazar etiquetas existentes</translation>
     </message>
     <message>
         <location filename="../mp3_autotagger/gui/ui.py" line="390"/>
         <source>Check to convert original audio to .mp3</source>
-        <translation>Activar casilla para convertir audio original en .mp3</translation>
+        <translation>Activar para convertir el audio original a .mp3</translation>
     </message>
     <message>
         <location filename="../mp3_autotagger/gui/ui.py" line="394"/>
@@ -318,9 +338,9 @@
 <context>
     <name>Update App Window</name>
     <message>
-        <location filename="../mp3_autotagger/gui/main_window.py" line="141"/>
+        <location filename="../mp3_autotagger/gui/main_window.py" line="122"/>
         <source>No new updates available</source>
-        <translation>No hay nuevas actualizaciones disponibles</translation>
+        <translation type="obsolete">No hay nuevas actualizaciones disponibles</translation>
     </message>
 </context>
 </TS>

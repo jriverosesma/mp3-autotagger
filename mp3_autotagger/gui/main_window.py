@@ -98,10 +98,10 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
         """Display the 'About' window with application details."""
 
         about_message_box = qt_get_about_widget()
-        about_message_box.setWindowTitle(self.translate("About Window", "About MP3 Autotagger"))
+        about_message_box.setWindowTitle(self.translate("Main Window", "About MP3 Autotagger"))
         about_message_box.setText(
             self.translate(
-                "About Window",
+                "Main Window",
                 "<p>An application for MP3 autotagging and more.</p>"
                 '<p>GitHub: <a href="https://github.com/jriverosesma/mp3-autotagger">mp3-autotagger</a></p>'
                 '<p>Email: <a href="mailto:jriverosesma@gmail.com">jriverosesma@gmail.com</a></p>',
@@ -139,19 +139,22 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
             status = update_package()
             if status.startswith("mp3-autotagger is already at the latest version"):
                 self._show_info_message(
-                    self.translate("Update App Window", "No new updates available"),
+                    self.translate("Main Window", "No new updates available"),
                     title=self.translate("Update"),
                 )
             else:
                 self._show_info_message(
                     self.translate(
-                        "Update App Window",
+                        "Main Window",
                         "<p>Updated successfully!</p><p>Restart application for changes to take effect.</p>",
                     ),
                     self.translate("Update"),
                 )
         except Exception:
-            self._show_error_message(message_md=self.translate("Update failed!"), title=self.translate("Update"))
+            self._show_error_message(
+                message_md=self.translate("Main Window", "Update failed!"),
+                title=self.translate("Main Window", "Update"),
+            )
 
     def _set_language_english(self) -> None:
         """Set the application language to English."""
