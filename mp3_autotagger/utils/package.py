@@ -41,7 +41,6 @@ def update_package(package_name: str = "mp3-autotagger") -> str:
     initial_version = get_package_version(package_name)
 
     if not initial_version:
-        # If unable to retrieve the version, return an error message
         return f"Error: Unable to determine the current version of {package_name}. Make sure the package is installed."
 
     try:
