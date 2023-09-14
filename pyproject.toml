@@ -22,6 +22,7 @@ yt-dlp = "^2023.7.6"
 
 # Development
 black = { version = "^23.7.0", optional = true }
+bumpver = { version = "^2023.1126", optional = true }
 isort = { version = "^5.12.0", optional = true }
 flake8 = { version = "^6.1.0", optional = true }
 pre-commit = { version = "^3.3.3", optional = true }
@@ -35,8 +36,9 @@ pytest-sugar = { version = "^0.9.7", optional = true }
 pillow = { version = "^10.0.0", optional = true }
 
 [tool.poetry.extras]
-dev = ["black", "isort", "flake8", "pre-commit", "pyqt5-tools"]
+dev = ["black", "bumpver", "isort", "flake8", "pre-commit", "pyqt5-tools"]
 test = ["pytest", "pytest-sugar", "pillow"]
+all = ["black", "bumpver", "isort", "flake8", "pre-commit", "pyqt5-tools", "pytest", "pytest-sugar", "pillow"]
 
 [build-system]
 requires = ["poetry-core"]
@@ -53,7 +55,7 @@ profile = "black"
 line_length = 120
 
 [tool.bumpver]
-current_version = "0.1.0"
+current_version = "0.1.1"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit          = false
 tag             = false
