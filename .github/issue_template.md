@@ -1,5 +1,4 @@
 ## Summary
-
 Short summary of the issue.
 
 ## Description
