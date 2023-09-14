@@ -1,4 +1,4 @@
-from importlib.resources import path as resource_path
+from importlib.resources import files
 from pathlib import Path
 
 
@@ -13,12 +13,13 @@ def get_resource_paths(package: str, *resource_relative_paths: str) -> dict[str,
     Returns:
         dict[str, Path]: Dictionary mapping resource names to their respective file paths.
     """
+
     resource_paths: dict[str, Path] = {}
+    package_resources = files(package)
 
     for r_path in resource_relative_paths:
         # Fetch and store the path for each resource
-        with resource_path(package, r_path) as data_path:
-            resource_paths[Path(r_path).name] = data_path
+        resource_paths[Path(r_path).name] = package_resources / r_path
 
     return resource_paths
 
