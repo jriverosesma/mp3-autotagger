@@ -1,4 +1,6 @@
 [![Unit Tests](https://github.com/jriverosesma/mp3-autotagger/actions/workflows/unit_tests.yaml/badge.svg)](https://github.com/jriverosesma/mp3-autotagger/actions/workflows/unit_tests.yaml)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/jriverosesma/mp3-autotagger?include_prereleases&label=latest%20release&color=blue)](https://github.com/jriverosesma/mp3-autotagger/releases)
+[![PyPI version](https://img.shields.io/pypi/v/mp3-autotagger.svg?color=blue)](https://pypi.org/project/mp3-autotagger/)
 
 # MP3 Autotagger
 A simple application to tag .mp3 files automatically and more.
@@ -29,7 +31,7 @@ My dad wanted a tool to automatically tag all the .mp3 files from his old music 
 1. Prerequisite: Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (more lightweight) or [Anaconda](https://www.anaconda.com/).
 
 2. Open Anaconda Prompt and run the following commands:
-```
+```bash
 conda create -y -n mp3-autotagger python=3.10.12 --no-default-packages
 conda activate mp3-autotagger
 conda install -y ffmpeg
