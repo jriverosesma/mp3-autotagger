@@ -62,7 +62,7 @@ version_pattern = "MAJOR.MINOR.PATCH"
 commit          = true
 tag             = true
 push            = true
-message         = "Bump version: {current_version} → {new_version}"
+commit_message  = "Bump version: {old_version} → {new_version}"
 
 [tool.bumpver.file_patterns]
 "pyproject.toml" = [
