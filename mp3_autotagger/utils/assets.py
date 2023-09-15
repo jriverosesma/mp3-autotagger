@@ -2,7 +2,7 @@ from importlib.resources import files
 from pathlib import Path
 
 
-def get_resource_paths(package: str, *resource_relative_paths: str) -> dict[str, Path]:
+def get_resource_paths(package: str, *resource_relative_paths: str) -> dict[str, str]:
     """
     Fetch the file paths of multiple resources from a specified package.
 
@@ -11,7 +11,7 @@ def get_resource_paths(package: str, *resource_relative_paths: str) -> dict[str,
         *resource_names (str): Resources (files) relative path to package folder.
 
     Returns:
-        dict[str, Path]: Dictionary mapping resource names to their respective file paths.
+        dict[str, str]: Dictionary mapping resource names to their respective file paths as strings.
     """
 
     resource_paths: dict[str, Path] = {}
@@ -19,13 +19,13 @@ def get_resource_paths(package: str, *resource_relative_paths: str) -> dict[str,
 
     for r_path in resource_relative_paths:
         # Fetch and store the path for each resource
-        resource_paths[Path(r_path).name] = package_resources / r_path
+        resource_paths[Path(r_path).stem] = str(package_resources / r_path)
 
     return resource_paths
 
 
 # Fetch all resource paths
-RESOURCE_PATHS: dict[str, Path] = get_resource_paths(
+RESOURCE_PATHS: dict[str, str] = get_resource_paths(
     "mp3_autotagger",
     "assets/main_icon.png",
     "assets/autotagger_icon.png",

@@ -37,7 +37,7 @@ class MP3AutotaggerGUI:
         if self._current_track.tags["APIC"]:
             self._cover_bytes = self._current_track.tags["APIC"]
         else:
-            with open(RESOURCE_PATHS["no_cover.jpg"], mode="rb") as f:
+            with open(RESOURCE_PATHS["no_cover"], mode="rb") as f:
                 self._cover_bytes = f.read()
         self._set_cover()
 

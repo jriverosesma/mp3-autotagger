@@ -74,8 +74,8 @@ def qt_get_about_widget() -> qtw.QMessageBox:
 
     about_message_box = qtw.QMessageBox()
     # Set the main icon for the about message box
-    about_message_box.setWindowIcon(QIcon(RESOURCE_PATHS["main_icon.png"]))
+    about_message_box.setWindowIcon(QIcon(RESOURCE_PATHS["main_icon"]))
     # Set a scaled pixmap of the main icon as the main icon of the message box
-    about_message_box.setIconPixmap(QPixmap(RESOURCE_PATHS["main_icon.png"]).scaled(75, 75))
+    about_message_box.setIconPixmap(QPixmap(RESOURCE_PATHS["main_icon"]).scaled(75, 75))
 
     return about_message_box
