@@ -6,6 +6,3 @@ conda activate mp3-autotagger
 
 # Generate NOTICES file
 pip-licenses --output-file=NOTICES
-
-# Deactivate the conda environment
-conda deactivate

@@ -6,6 +6,3 @@ conda activate mp3-autotagger
 
 # Generate .ts file
 pylupdate5  mp3_autotagger/gui/*.py mp3_autotagger/utils/*.py -ts translations/eng-es.ts
-
-# Deactivate the conda environment
-conda deactivate
