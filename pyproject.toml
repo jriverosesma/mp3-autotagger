@@ -59,9 +59,10 @@ line_length = 120
 [tool.bumpver]
 current_version = "0.1.1"
 version_pattern = "MAJOR.MINOR.PATCH"
-commit          = false
-tag             = false
-push            = false
+commit          = true
+tag             = true
+push            = true
+message         = "Bump version: {current_version} → {new_version}"
 
 [tool.bumpver.file_patterns]
 "pyproject.toml" = [
