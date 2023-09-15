@@ -1,4 +1,4 @@
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets as qtw
 
 from ..utils.assets import RESOURCE_PATHS
@@ -26,6 +26,12 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
 
+        # Set asset resources
+        self._set_icon_assets()
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(RESOURCE_PATHS["main_icon"]), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
+
         # Tabs GUIs
         self._mp3_autotagger_gui: MP3AutotaggerGUI = MP3AutotaggerGUI(self)
         self._youtube2mp3_gui: Youtube2MP3GUI = Youtube2MP3GUI(self)
@@ -35,6 +41,28 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
         self._trans = QtCore.QTranslator(self)
         self._set_app_scale()
         self._connect_signals_slots()
+
+    @staticmethod
+    def _get_icon_from_image_path(image_path: str) -> QtGui.QIcon:
+        """Get Qt icon from image path."""
+
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(image_path), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        return icon
+
+    def _set_icon_assets(self) -> None:
+        """Sets icon assets for main window and tabs."""
+
+        # Main window icon
+        icon = MainWindowGUI._get_icon_from_image_path(RESOURCE_PATHS["main_icon"])
+        self.setWindowIcon(icon)
+
+        # Tab icons
+        for tab, icon_name in zip([self.tab_autotagger, self.tab_youtube2mp3], ["autotagger_icon", "youtube2mp3_icon"]):
+            icon = MainWindowGUI._get_icon_from_image_path(RESOURCE_PATHS[icon_name])
+            index = self.tabWidget.indexOf(tab)
+            self.tabWidget.setTabIcon(index, icon)
 
     def _set_app_scale(self) -> None:
         """Adjust the scale of the app based on the screen size."""
