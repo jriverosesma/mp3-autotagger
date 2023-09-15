@@ -168,7 +168,7 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
             if status.startswith("mp3-autotagger is already at the latest version"):
                 self._show_info_message(
                     self.translate("Main Window", "No new updates available"),
-                    title=self.translate("Update"),
+                    title=self.translate("Main Window", "Update"),
                 )
             else:
                 self._show_info_message(
