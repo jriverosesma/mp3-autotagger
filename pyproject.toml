@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mp3-autotagger"
-version = "v1.0.0"
+version = "v1.0.1"
 description = "A simple application to tag .mp3 files automatically and more."
 authors = ["Juan Rivero Sesma <jriverosesma@gmail.com>"]
 readme = "README.md"
@@ -57,7 +57,7 @@ profile = "black"
 line_length = 120
 
 [tool.bumpver]
-current_version = "v1.0.0"
+current_version = "v1.0.1"
 version_pattern = "vMAJOR.MINOR.PATCH"
 commit          = true
 tag             = true
