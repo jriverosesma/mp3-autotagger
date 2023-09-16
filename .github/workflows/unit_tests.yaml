@@ -23,7 +23,7 @@ jobs:
     - name: Set up Conda environment
       uses: conda-incubator/setup-miniconda@v2
       with:
-        python-version: "3.10.12"
+        python-version: "3.10"
         activate-environment: mp3-autotagger
         auto-activate-base: false
 

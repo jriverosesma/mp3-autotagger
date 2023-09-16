@@ -32,7 +32,7 @@ My dad wanted a tool to automatically tag all the .mp3 files from his old music 
 
 2. Open Anaconda Prompt and run the following commands:
 ```bash
-conda create -y -n mp3-autotagger python=3.10.12 --no-default-packages
+conda create -y -n mp3-autotagger python=3.10 --no-default-packages
 conda activate mp3-autotagger
 conda install -y ffmpeg
 python -m pip install --upgrade pip
