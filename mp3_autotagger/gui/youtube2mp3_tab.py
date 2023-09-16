@@ -8,7 +8,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5.QtGui import QFont, QPixmap
 from yt_dlp.utils import DownloadError
 
-from ..utils.youtube import get_youtube_audiostream
+from mp3_autotagger.utils.youtube import get_youtube_audiostream
 
 B_TO_MIB: int = 1 / (1024 * 1024)  # Bytes to Mebibyte conversion constant
 

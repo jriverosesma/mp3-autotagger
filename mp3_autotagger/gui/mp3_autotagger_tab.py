@@ -7,9 +7,9 @@ from threading import Thread
 from PyQt5 import QtWidgets as qtw
 from PyQt5.QtGui import QPixmap
 
-from ..utils.assets import RESOURCE_PATHS
-from ..utils.mp3 import MP3
-from ..utils.qt import qt_get_open_files_and_dirs
+from mp3_autotagger.utils.assets import RESOURCE_PATHS
+from mp3_autotagger.utils.mp3 import MP3
+from mp3_autotagger.utils.qt import qt_get_open_files_and_dirs
 
 
 class MP3AutotaggerGUI:

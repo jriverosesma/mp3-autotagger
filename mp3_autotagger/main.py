@@ -2,7 +2,7 @@ import sys
 
 from PyQt5 import QtWidgets as qtw
 
-from .gui import GUI
+from mp3_autotagger.gui import GUI
 
 
 def main() -> None:

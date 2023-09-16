@@ -1,12 +1,12 @@
 from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets as qtw
 
-from ..utils.assets import RESOURCE_PATHS
-from ..utils.package import update_package
-from ..utils.qt import qt_get_about_widget
-from .mp3_autotagger_tab import MP3AutotaggerGUI
-from .ui import Ui_MainWindow
-from .youtube2mp3_tab import Youtube2MP3GUI
+from mp3_autotagger.gui.mp3_autotagger_tab import MP3AutotaggerGUI
+from mp3_autotagger.gui.ui import Ui_MainWindow
+from mp3_autotagger.gui.youtube2mp3_tab import Youtube2MP3GUI
+from mp3_autotagger.utils.assets import RESOURCE_PATHS
+from mp3_autotagger.utils.package import update_package
+from mp3_autotagger.utils.qt import qt_get_about_widget
 
 
 class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):

@@ -2,7 +2,7 @@ from PyQt5 import QtCore
 from PyQt5 import QtWidgets as qtw
 from PyQt5.QtGui import QIcon, QPixmap
 
-from .assets import RESOURCE_PATHS
+from mp3_autotagger.utils.assets import RESOURCE_PATHS
 
 
 def qt_get_open_files_and_dirs(
