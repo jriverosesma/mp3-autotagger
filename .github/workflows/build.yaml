@@ -1,4 +1,4 @@
-name: unit tests
+name: build
 
 on:
   push:
@@ -27,8 +27,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  unit-tests:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
     - name: Check out code
@@ -51,16 +54,26 @@ jobs:
       run: |
         conda install ffmpeg
         python -m pip install --upgrade pip
-        pip install -e .[all]
+        pip install .
+        pip install pyinstaller
 
-    - name: Run formatters
+    - name: Build binary
       shell: bash -l {0}
       run: |
-        flake8 .
-        black --check .
-        isort --check-only .
+        pyinstaller mp3_autotagger.spec
 
-    - name: Run unit tests
-      shell: bash -l {0}
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: binary-${{ matrix.os }}
+        path: dist/
+
+    - name: Run integration tests (Linux & macOS)
+      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
       run: |
-        pytest
+        . ./scripts/integration_test_linux_macos.sh
+
+    - name: Run integration tests (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        .\scripts\integration_test_win.ps1

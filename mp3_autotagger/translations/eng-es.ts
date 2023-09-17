@@ -102,22 +102,22 @@
         <translation>¡Éxito! Audio guardado en {self._download_folder}</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.py" line="129"/>
+        <location filename="../gui/main_window.py" line="131"/>
         <source>About MP3 Autotagger</source>
         <translation>Acerca de MP3 Autotagger</translation>
     </message>
     <message>
         <location filename="../gui/main_window.py" line="169"/>
         <source>No new updates available</source>
-        <translation>No hay nuevas actualizaciones disponibles</translation>
+        <translation type="obsolete">No hay nuevas actualizaciones disponibles</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.py" line="182"/>
+        <location filename="../gui/main_window.py" line="176"/>
         <source>Update failed!</source>
         <translation>Error en la actualización</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.py" line="182"/>
+        <location filename="../gui/main_window.py" line="176"/>
         <source>Update</source>
         <translation>Actualización</translation>
     </message>

@@ -1,9 +1,10 @@
-[![Unit Tests](https://github.com/jriverosesma/mp3-autotagger/actions/workflows/unit_tests.yaml/badge.svg)](https://github.com/jriverosesma/mp3-autotagger/actions/workflows/unit_tests.yaml)
+[![Unit tests](https://github.com/jriverosesma/mp3-autotagger/actions/workflows/unit_tests.yaml/badge.svg)](https://github.com/jriverosesma/mp3-autotagger/actions/workflows/unit_tests.yaml)
+[![Build](https://github.com/jriverosesma/mp3-autotagger/actions/workflows/build.yaml/badge.svg)](https://github.com/jriverosesma/mp3-autotagger/actions/workflows/build.yaml)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/jriverosesma/mp3-autotagger?include_prereleases&label=latest%20release&color=blue)](https://github.com/jriverosesma/mp3-autotagger/releases)
 [![PyPI version](https://img.shields.io/pypi/v/mp3-autotagger.svg?color=blue)](https://pypi.org/project/mp3-autotagger/)
 
 # MP3 Autotagger
-A simple application to tag .mp3 files automatically and more.
+A simple OS independent application to tag .mp3 files automatically and more.
 
 ## Tools
 ### MP3 autotagger
@@ -28,6 +29,9 @@ Enter URL from Youtube video and download audio as an .mp3 file.
 My dad wanted a tool to automatically tag all the .mp3 files from his old music library and easily download audio from Youtube videos. I developed this especifically for my dad needs only :)
 
 ## Installation
+
+### Python package
+
 1. Prerequisite: Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (more lightweight) or [Anaconda](https://www.anaconda.com/).
 
 2. Open Anaconda Prompt and run the following commands:
@@ -40,6 +44,10 @@ pip install mp3-autotagger
 ```
 
 ⚠️ **Make sure to install `ffmpeg` with the above command** ⚠️
+
+### Binary distribution
+
+Binary distributions for Linux, Windows and macOS are available with each GitHub release as stand-alone executables [here](https://github.com/jriverosesma/mp3-autotagger/releases).
 
 ## Usage
 1. Open Anaconda Prompt and run the following command to activate the conda environment: `conda activate mp3-autotagger`

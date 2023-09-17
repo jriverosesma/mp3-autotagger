@@ -1,11 +1,15 @@
 import pytest
 
-from mp3_autotagger.utils.package import get_package_version, update_package
+from mp3_autotagger.utils.package import get_package_version, is_running_as_pyinstaller_bundle, update_package
 
 
 @pytest.fixture(scope="class")
 def package_name() -> str:
     return "mp3-autotagger"
+
+
+def test_is_running_as_pyinstaller_bundle() -> None:
+    assert not is_running_as_pyinstaller_bundle()
 
 
 def test_update_package(package_name: str) -> None:

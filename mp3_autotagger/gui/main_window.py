@@ -1,11 +1,13 @@
 from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets as qtw
 
+from mp3_autotagger import __version__ as package_version
 from mp3_autotagger.gui.mp3_autotagger_tab import MP3AutotaggerGUI
 from mp3_autotagger.gui.ui import Ui_MainWindow
 from mp3_autotagger.gui.youtube2mp3_tab import Youtube2MP3GUI
 from mp3_autotagger.utils.assets import RESOURCE_PATHS
-from mp3_autotagger.utils.package import update_package
+from mp3_autotagger.utils.github import check_for_updates
+from mp3_autotagger.utils.package import is_running_as_pyinstaller_bundle, update_package
 from mp3_autotagger.utils.qt import qt_get_about_widget
 
 
@@ -131,6 +133,7 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
             self.translate(
                 "Main Window",
                 "<p>An application for MP3 autotagging and more.</p>"
+                f"<p>Version: {package_version}</p>"
                 '<p>GitHub: <a href="https://github.com/jriverosesma/mp3-autotagger">mp3-autotagger</a></p>'
                 '<p>Email: <a href="mailto:jriverosesma@gmail.com">jriverosesma@gmail.com</a></p>',
             )
@@ -164,20 +167,11 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
         """Check for application updates and provide user feedback."""
 
         try:
-            status = update_package()
-            if status.startswith("mp3-autotagger is already at the latest version"):
-                self._show_info_message(
-                    self.translate("Main Window", "No new updates available"),
-                    title=self.translate("Main Window", "Update"),
-                )
-            else:
-                self._show_info_message(
-                    self.translate(
-                        "Main Window",
-                        "<p>Updated successfully!</p><p>Restart application for changes to take effect.</p>",
-                    ),
-                    self.translate("Update"),
-                )
+            status = check_for_updates() if is_running_as_pyinstaller_bundle() else update_package()
+            self._show_info_message(
+                message_md=self.translate("Main Window", status),
+                title=self.translate("Main Window", "Update"),
+            )
         except Exception:
             self._show_error_message(
                 message_md=self.translate("Main Window", "Update failed!"),

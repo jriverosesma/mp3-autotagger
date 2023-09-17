@@ -2,6 +2,12 @@ import subprocess
 import sys
 
 
+def is_running_as_pyinstaller_bundle() -> bool:
+    """Check if application is running as a `PyInstaller` bundle."""
+
+    return hasattr(sys, "_MEIPASS")
+
+
 def get_package_version(package_name: str) -> str | None:
     """
     Retrieve the installed version of a given package.

@@ -4,7 +4,7 @@ from typing import Any
 from shazamio import Shazam
 
 # Initialize a Shazam object globally
-shazam = Shazam()
+SHAZAM = Shazam()
 
 
 async def shazam_find_track_info(filepath: Path) -> dict[str, Any]:
@@ -19,4 +19,4 @@ async def shazam_find_track_info(filepath: Path) -> dict[str, Any]:
     """
 
     # Use Shazam's recognize_song method to identify the track from the provided filepath
-    return await shazam.recognize_song(filepath)
+    return await SHAZAM.recognize_song(filepath)
