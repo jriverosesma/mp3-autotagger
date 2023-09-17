@@ -7,6 +7,7 @@ from mp3_autotagger.gui.ui import Ui_MainWindow
 from mp3_autotagger.gui.youtube2mp3_tab import Youtube2MP3GUI
 from mp3_autotagger.utils.assets import RESOURCE_PATHS
 from mp3_autotagger.utils.qt import qt_get_about_widget
+from mp3_autotagger.utils.system import is_ffmpeg_installed
 from mp3_autotagger.utils.update import check_for_updates
 
 
@@ -42,6 +43,20 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
         self._trans = QtCore.QTranslator(self)
         self._set_app_scale()
         self._connect_signals_slots()
+
+        # Scan for ffmpeg
+        if not is_ffmpeg_installed():
+            self._show_warning_message(
+                message_md=self.translate(
+                    "Main Window",
+                    (
+                        "<p>ffmpeg was not found in your system and is needed to convert audios to .mp3.</p>",
+                        '<p>Please download and install it from <a href="https://ffmpeg.org/">here</a> '
+                        "or using conda.</p>",
+                    ),
+                ),
+                title=self.translate("Main Window", "ffmpeg not found"),
+            )
 
     @staticmethod
     def _get_icon_from_image_path(image_path: str) -> QtGui.QIcon:
@@ -138,6 +153,18 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
             )
         )
         about_message_box.exec()
+
+    def _show_warning_message(self, message_md: str = "Unknown Warning", title: str = "Warning") -> None:
+        """
+        Display a warning message box.
+
+        Args:
+            message_md (str, optional): The warning message (in markdown format) to display.
+                Defaults to "Unknown Warning".
+            title (str, optional): The title of the warning message box. Defaults to "Warning".
+        """
+
+        qtw.QMessageBox.warning(self, title, message_md)
 
     def _show_info_message(self, message_md: str, title: str = "Info") -> None:
         """
