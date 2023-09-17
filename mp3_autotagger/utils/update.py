@@ -11,7 +11,8 @@ translate: callable = QtCore.QCoreApplication.translate
 
 
 def get_releases_from_github(owner: str, repo: str) -> list[str]:
-    """Get published releases for a GitHub repository.
+    """
+    Get published releases for a GitHub repository.
 
     Args:
         owner (str): repository owner.
@@ -35,7 +36,8 @@ def get_releases_from_github(owner: str, repo: str) -> list[str]:
 
 
 def check_for_updates() -> str:
-    """Check for application updates.
+    """
+    Check for application updates.
 
     Returns:
         str: A message indicating if there are new appliation updates available.
@@ -59,7 +61,7 @@ def check_for_updates() -> str:
                 "Main Window",
                 (
                     f"<p>Newest mp3-autotagger version {newest_version} available.</p>"
-                    "<p>Install using: <b>pip install --upgrade mp3-autotagger</b></p>"
+                    "<p>Install using: <code>pip install --upgrade mp3-autotagger</code></p>"
                 ),
             )
         return message
