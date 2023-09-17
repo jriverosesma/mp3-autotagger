@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.0] - 2023-09-18
+
+### Added
+
+- Raise alert to prompt user to install `ffmpeg` if not found in the system.
+
 ## [1.1.1] - 2023-09-17
 
 ### Fixed
