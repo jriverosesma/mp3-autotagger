@@ -34,6 +34,7 @@ pyqt5-tools = { version = "^5.15.9.3.3", optional = true }
 
 # Test
 pytest = { version = "^7.4.2", optional = true }
+pytest-mock = { version = "^3.11.1", optional = true }
 pytest-sugar = { version = "^0.9.7", optional = true }
 
 # Test only dependencies
@@ -41,8 +42,8 @@ pillow = { version = "^10.0.1", optional = true }
 
 [tool.poetry.extras]
 dev = ["black", "bumpver", "isort", "flake8", "pre-commit", "pyqt5-tools"]
-test = ["pytest", "pytest-sugar", "pillow"]
-all = ["black", "bumpver", "isort", "flake8", "pre-commit", "pyqt5-tools", "pytest", "pytest-sugar", "pillow"]
+test = ["pytest", "pytest-mock", "pytest-sugar", "pillow"]
+all = ["black", "bumpver", "isort", "flake8", "pre-commit", "pyqt5-tools", "pytest", "pytest-mock", "pytest-sugar", "pillow"]
 
 [build-system]
 requires = ["poetry-core"]

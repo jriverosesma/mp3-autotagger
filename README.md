@@ -49,6 +49,8 @@ pip install mp3-autotagger
 
 Binary distributions for Linux, Windows and macOS are available with each GitHub release as stand-alone executables [here](https://github.com/jriverosesma/mp3-autotagger/releases).
 
+⚠️ **Note that you still need to install [ffmpeg](https://ffmpeg.org/) in your system** ⚠️
+
 ## Usage
 1. Open Anaconda Prompt and run the following command to activate the conda environment: `conda activate mp3-autotagger`
 2. Run the following command to launch the application: `mp3-autotagger`
