@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 import pytest
 
 from mp3_autotagger import __version__ as current_version
-from mp3_autotagger.utils.github import check_for_updates, get_releases_from_github
+from mp3_autotagger.utils.update import check_for_updates, get_releases_from_github
 
 REPOSITORY_OWNER: str = "jriverosesma"
 REPOSITORY_NAME: str = "mp3-autotagger"
@@ -37,7 +37,7 @@ def test_get_releases_from_github_failure():
 
 def test_check_for_updates_latest_version():
     # Mock the function to return a version list where the current version is the latest.
-    with patch("mp3_autotagger.utils.github.get_releases_from_github", return_value=[current_version, "0.9"]):
+    with patch("mp3_autotagger.utils.update.get_releases_from_github", return_value=[current_version, "0.9"]):
         result = check_for_updates()
         assert result == f"mp3-autotagger is already at the latest version ({current_version})"
 
@@ -45,10 +45,9 @@ def test_check_for_updates_latest_version():
 def test_check_for_updates_new_version_available():
     # Mock the function to return a version list where there's a newer version.
     newest_version = "1.1"
-    with patch("mp3_autotagger.utils.github.get_releases_from_github", return_value=[newest_version, current_version]):
+    with patch("mp3_autotagger.utils.update.get_releases_from_github", return_value=[newest_version, current_version]):
         result = check_for_updates()
-        expected_url = f"https://github.com/{REPOSITORY_OWNER}/{REPOSITORY_NAME}/releases"
-        assert (
-            result
-            == f"Newest mp3-autotagger version {newest_version} available in  <a href='{expected_url}'>GitHub</a>!</p>"
+        assert result == (
+            f"<p>Newest mp3-autotagger version {newest_version} available.</p>"
+            "<p>Install using: <b>pip install --upgrade mp3-autotagger</b></p>"
         )

@@ -1,9 +1,13 @@
 import requests
+from PyQt5 import QtCore, QtGui
 
 from mp3_autotagger import __version__ as current_version
+from mp3_autotagger.utils.package import is_running_as_pyinstaller_bundle
 
 REPOSITORY_OWNER: str = "jriverosesma"
 REPOSITORY_NAME: str = "mp3-autotagger"
+
+translate: callable = QtCore.QCoreApplication.translate
 
 
 def get_releases_from_github(owner: str, repo: str) -> list[str]:
@@ -40,9 +44,22 @@ def check_for_updates() -> str:
     releases: list[str] = get_releases_from_github(REPOSITORY_OWNER, REPOSITORY_NAME)
     newest_version = releases[0]
     if current_version == newest_version:
-        return f"mp3-autotagger is already at the latest version ({current_version})"
+        return translate("Main Window", f"mp3-autotagger is already at the latest version ({current_version})")
     else:
-        return (
-            f"Newest mp3-autotagger version {newest_version} available in  "
-            f"<a href='https://github.com/{REPOSITORY_OWNER}/{REPOSITORY_NAME}/releases'>GitHub</a>!</p>"
-        )
+        if is_running_as_pyinstaller_bundle():
+            message = translate(
+                "Main Window",
+                (
+                    f"Newest mp3-autotagger version {newest_version} available in "
+                    f"<a href='https://github.com/{REPOSITORY_OWNER}/{REPOSITORY_NAME}/releases'>GitHub</a>!"
+                ),
+            )
+        else:
+            message = translate(
+                "Main Window",
+                (
+                    f"<p>Newest mp3-autotagger version {newest_version} available.</p>"
+                    "<p>Install using: <b>pip install --upgrade mp3-autotagger</b></p>"
+                ),
+            )
+        return message

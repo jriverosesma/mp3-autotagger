@@ -102,7 +102,7 @@
         <translation>¡Éxito! Audio guardado en {self._download_folder}</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.py" line="131"/>
+        <location filename="../gui/main_window.py" line="130"/>
         <source>About MP3 Autotagger</source>
         <translation>Acerca de MP3 Autotagger</translation>
     </message>
@@ -112,14 +112,19 @@
         <translation type="obsolete">No hay nuevas actualizaciones disponibles</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.py" line="176"/>
+        <location filename="../gui/main_window.py" line="175"/>
         <source>Update failed!</source>
         <translation>Error en la actualización</translation>
     </message>
     <message>
-        <location filename="../gui/main_window.py" line="176"/>
+        <location filename="../gui/main_window.py" line="175"/>
         <source>Update</source>
         <translation>Actualización</translation>
+    </message>
+    <message>
+        <location filename="../utils/update.py" line="48"/>
+        <source>mp3-autotagger is already at the latest version ({current_version})</source>
+        <translation>mp3-autotagger ya está actualizado a la última versión ({current_version})</translation>
     </message>
 </context>
 <context>
