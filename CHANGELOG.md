@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.1] - 2023-09-17
+
+### Fixed
+
+- Application updates. The application is not auto-updatable anymore to avoid increasing complexity and potential errors, but instead displays a message when new updates are available.
+
 ## [1.1.0] - 2023-09-17
 
 ### Added
