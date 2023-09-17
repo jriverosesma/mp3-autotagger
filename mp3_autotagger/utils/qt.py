@@ -1,4 +1,3 @@
-from PyQt5 import QtCore
 from PyQt5 import QtWidgets as qtw
 from PyQt5.QtGui import QIcon, QPixmap
 
@@ -28,12 +27,10 @@ def qt_get_open_files_and_dirs(
         list[str]: List of selected files and directories.
     """
 
-    _translate = QtCore.QCoreApplication.translate
-
     def updateText():
         """Update the text in the dialog with the selected items."""
         selected = [index.data() for index in view.selectionModel().selectedRows()]
-        lineEdit.setText(_translate("Main Window", " ".join(selected)))
+        lineEdit.setText(" ".join(selected))
 
     # Create a file dialog
     dialog = qtw.QFileDialog(parent, windowTitle=caption)
@@ -58,7 +55,7 @@ def qt_get_open_files_and_dirs(
 
     # Find the line edit widget in the dialog and connect it to clear its content when the directory is entered
     lineEdit = dialog.findChild(qtw.QLineEdit)
-    dialog.directoryEntered.connect(lambda: lineEdit.setText(_translate("Main Window", "")))
+    dialog.directoryEntered.connect(lambda: lineEdit.setText(""))
 
     # Show the dialog and return the selected files if "Open" is clicked; otherwise, return an empty list
     return dialog.selectedFiles() if dialog.exec_() else []
