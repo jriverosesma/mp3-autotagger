@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.0] - 2023-09-17
+
+### Added
+
+- The application is now available as a binary distribution for Linux, Windows and macOS. Stand-alone binary distributions can be downloaded from each release in GitHub releases section.
+
 ## [1.0.1] - 2023-09-15
 
 ### Fixed
