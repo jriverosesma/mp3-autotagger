@@ -47,8 +47,7 @@ def test_check_for_updates_new_version_available():
     newest_version = "1.1"
     with patch("mp3_autotagger.utils.update.get_releases_from_github", return_value=[newest_version, current_version]):
         result = check_for_updates()
-        expected_url = f"https://github.com/{REPOSITORY_OWNER}/{REPOSITORY_NAME}/releases"
-        assert (
-            result
-            == f"Newest mp3-autotagger version {newest_version} available in  <a href='{expected_url}'>GitHub</a>!</p>"
+        assert result == (
+            f"<p>Newest mp3-autotagger version {newest_version} available.</p>"
+            "<p>Install using: <b>pip install --upgrade mp3-autotagger</b></p>"
         )

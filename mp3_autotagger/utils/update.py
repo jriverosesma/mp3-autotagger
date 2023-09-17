@@ -1,6 +1,7 @@
 import requests
 
 from mp3_autotagger import __version__ as current_version
+from mp3_autotagger.utils.package import is_running_as_pyinstaller_bundle
 
 REPOSITORY_OWNER: str = "jriverosesma"
 REPOSITORY_NAME: str = "mp3-autotagger"
@@ -42,7 +43,14 @@ def check_for_updates() -> str:
     if current_version == newest_version:
         return f"mp3-autotagger is already at the latest version ({current_version})"
     else:
-        return (
-            f"Newest mp3-autotagger version {newest_version} available in  "
-            f"<a href='https://github.com/{REPOSITORY_OWNER}/{REPOSITORY_NAME}/releases'>GitHub</a>!</p>"
-        )
+        if is_running_as_pyinstaller_bundle():
+            message = (
+                f"Newest mp3-autotagger version {newest_version} available in "
+                f"<a href='https://github.com/{REPOSITORY_OWNER}/{REPOSITORY_NAME}/releases'>GitHub</a>!"
+            )
+        else:
+            message = (
+                f"<p>Newest mp3-autotagger version {newest_version} available.</p>"
+                "<p>Install using: <b>pip install --upgrade mp3-autotagger</b></p>"
+            )
+        return message
