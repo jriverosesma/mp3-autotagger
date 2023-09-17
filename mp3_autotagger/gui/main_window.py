@@ -50,9 +50,9 @@ class MainWindowGUI(qtw.QMainWindow, Ui_MainWindow):
                 message_md=self.translate(
                     "Main Window",
                     (
-                        "<p>ffmpeg was not found in your system and is needed to convert audios to .mp3.</p>",
+                        "<p>ffmpeg was not found in your system and is needed to convert audios to .mp3.</p>"
                         '<p>Please download and install it from <a href="https://ffmpeg.org/">here</a> '
-                        "or using conda.</p>",
+                        "or using conda.</p>"
                     ),
                 ),
                 title=self.translate("Main Window", "ffmpeg not found"),
