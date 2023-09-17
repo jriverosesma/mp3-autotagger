@@ -43,7 +43,7 @@ pillow = { version = "^10.0.1", optional = true }
 [tool.poetry.extras]
 dev = ["black", "bumpver", "isort", "flake8", "pre-commit", "pyqt5-tools"]
 test = ["pytest", "pytest-mock", "pytest-sugar", "pillow"]
-all = ["black", "bumpver", "isort", "flake8", "pre-commit", "pyqt5-tools", "pytest", "pytest-sugar", "pillow"]
+all = ["black", "bumpver", "isort", "flake8", "pre-commit", "pyqt5-tools", "pytest", "pytest-mock", "pytest-sugar", "pillow"]
 
 [build-system]
 requires = ["poetry-core"]
