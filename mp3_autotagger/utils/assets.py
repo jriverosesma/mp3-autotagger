@@ -1,5 +1,8 @@
+import sys
 from importlib.resources import files
 from pathlib import Path
+
+from mp3_autotagger.utils.package import is_running_as_pyinstaller_bundle
 
 
 def get_resource_paths(package: str, *resource_relative_paths: str) -> dict[str, str]:
@@ -14,12 +17,15 @@ def get_resource_paths(package: str, *resource_relative_paths: str) -> dict[str,
         dict[str, str]: Dictionary mapping resource names to their respective file paths as strings.
     """
 
-    resource_paths: dict[str, Path] = {}
-    package_resources = files(package)
+    if is_running_as_pyinstaller_bundle():
+        base_path: Path = Path(sys._MEIPASS)
+    else:
+        base_path: Path = Path(files(package))
 
+    resource_paths: dict[str, str] = {}
     for r_path in resource_relative_paths:
         # Fetch and store the path for each resource
-        resource_paths[Path(r_path).stem] = str(package_resources / r_path)
+        resource_paths[Path(r_path).stem] = str(base_path / r_path)
 
     return resource_paths
 
