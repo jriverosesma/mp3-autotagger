@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.1] - 2023-09-18
+
+### Fixed
+
+- Small typo breaking windows binary distribution.
+
 ## [1.2.0] - 2023-09-18
 
 ### Added
