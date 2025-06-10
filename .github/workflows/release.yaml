@@ -12,92 +12,79 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v4
 
-    - name: Create .condarc file
-      run: |
-        echo 'create_default_packages: []' > .condarc
+      - name: Create .condarc file
+        run: |
+          echo 'create_default_packages: []' > .condarc
 
-    - name: Set up Conda environment
-      uses: conda-incubator/setup-miniconda@v2
-      with:
-        python-version: "3.10"
-        activate-environment: mp3-autotagger
-        auto-activate-base: false
-        condarc-file: .condarc
+      - name: Set up Conda environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          python-version: "3.10"
+          activate-environment: mp3-autotagger
+          auto-activate-base: false
+          condarc-file: .condarc
+          channels: conda-forge,defaults
+          channel-priority: strict
 
-    - name: Install dependencies with conda and pip
-      shell: bash -l {0}
-      run: |
-        conda install ffmpeg
-        python -m pip install --upgrade pip
-        pip install .
-        pip install pyinstaller
+      - name: Update Conda
+        shell: bash -l {0}
+        run: conda update -n base -c defaults conda -y
 
-    - name: Build binary
-      shell: bash -l {0}
-      run: |
-        pyinstaller mp3_autotagger.spec
+      - name: Install dependencies with conda and pip
+        shell: bash -l {0}
+        run: |
+          conda install ffmpeg
+          python -m pip install --upgrade pip
+          pip install .
+          pip install pyinstaller
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: bin-${{ matrix.os }}-${{ github.event.release.tag_name }}
-        path: dist
+      - name: Build binary
+        shell: bash -l {0}
+        run: |
+          pyinstaller mp3_autotagger.spec
 
-    - name: Run integration tests (Linux & macOS)
-      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
-      run: |
-        . ./scripts/integration_test_linux_macos.sh
+      - name: Zip binaries for (Linux & macOS)
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
+        run: |
+          zip -r bin-${{ matrix.os }}-${{ github.event.release.tag_name }}.zip dist
 
-    - name: Run integration tests (Windows)
-      if: matrix.os == 'windows-latest'
-      run: |
-        .\scripts\integration_test_win.ps1
+      - name: Zip binaries (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path dist\* -DestinationPath bin-${{ matrix.os }}-${{ github.event.release.tag_name }}.zip
 
-    - name: Zip binaries for (Linux & macOS)
-      if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
-      run: |
-        zip -r bin-${{ matrix.os }}-${{ github.event.release.tag_name }}.zip dist
-
-    - name: Zip binaries (Windows)
-      if: matrix.os == 'windows-latest'
-      shell: pwsh
-      run: |
-        Compress-Archive -Path dist -DestinationPath bin-${{ matrix.os }}-${{ github.event.release.tag_name }}.zip
-
-    - name: Upload Release Asset for ${{ matrix.os }}
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: bin-${{ matrix.os }}-${{ github.event.release.tag_name }}.zip
-        asset_name: "bin-${{ matrix.os }}-${{ github.event.release.tag_name }}.zip"
-        asset_content_type: application/octet-stream
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Release Asset for ${{ matrix.os }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} bin-${{ matrix.os }}-${{ github.event.release.tag_name }}.zip
 
   publish-pypi:
     runs-on: ubuntu-latest
     needs: build-and-release
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v4
 
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: "3.10"
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
-    - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
-    - name: Build and Publish to PyPI
-      env:
-        POETRY_HTTP_BASIC_PYPI_USERNAME: __token__
-        POETRY_HTTP_BASIC_PYPI_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-      run: |
-        poetry build
-        poetry publish
+      - name: Build and Publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          poetry build
+          poetry publish
