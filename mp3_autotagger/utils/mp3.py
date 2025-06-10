@@ -1,8 +1,8 @@
 import asyncio
-import urllib.request
 from pathlib import Path
 from typing import Union
 
+import requests
 from mutagen.id3 import APIC, ID3, TALB, TCON, TDRC, TIT2, TPE1, ID3NoHeaderError
 from mutagen.mp3 import MP3 as MP3_mutagen
 from mutagen.mp3 import HeaderNotFoundError
@@ -92,6 +92,27 @@ class MP3:
         if tag_class:
             self.audiotags.add(tag_class(encoding=3, text=new_value))
 
+    def _get_cover(self, url: str) -> bytes:
+        """
+        Retrieve track cover.
+
+        Args:
+            url (str): URL from which track cover can be retrieved.
+        """
+
+        headers = {"User-Agent": "Mozilla/5.0"}
+
+        try:
+            response = requests.get(url, headers=headers, proxies={"http": None, "https": None})
+
+            response.raise_for_status()
+            encoded_cover = response.content
+
+        except requests.exceptions.RequestException:
+            encoded_cover = b""
+
+        return encoded_cover
+
     def update_tags_shazam(self, replace_existing_tags: bool = False) -> bool:
         """
         Update the MP3 tags using Shazam's track information.
@@ -115,7 +136,7 @@ class MP3:
             "TALB": shazam_out["track"]["sections"][0]["metadata"][0]["text"],
             "TCON": shazam_out["track"]["genres"]["primary"],
             "TDRC": shazam_out["track"]["sections"][0]["metadata"][2]["text"],
-            "APIC": urllib.request.urlopen(shazam_out["track"]["images"]["coverarthq"]).read(),
+            "APIC": self._get_cover(shazam_out["track"]["images"]["coverarthq"]),
         }
 
         for tag_name, value in shazam_data_mapping.items():
