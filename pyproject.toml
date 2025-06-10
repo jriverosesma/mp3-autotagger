@@ -1,10 +1,15 @@
-[tool.poetry]
+[project]
 name = "mp3-autotagger"
 version = "v1.2.1"
 description = "A simple application to tag .mp3 files automatically and more."
-authors = ["Juan Rivero Sesma <jriverosesma@gmail.com>"]
+authors = [
+  { name = "Juan Rivero Sesma", email = "jriverosesma@gmail.com" }
+]
+include = ["assets/*", "NOTICES.md", "CHANGELOG.md", "LICENSE"]
 readme = "README.md"
-include = ["assets/*", "NOTICES", "CHANGELOG.md"]
+license = { file = "LICENSE" }
+keywords = ["dino", "chrome", "bot", "game", "automatic"]
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
@@ -18,32 +23,27 @@ classifiers = [
 python = "^3.10"
 mutagen = "^1.47.0"
 pyqt5 = "^5.15.9"
-requests = "^2.31.0"
-shazamio = "^0.4.0.1"
-yt-dlp = "^2023.7.6"
+requests = "^2.32.3"
+shazamio = "^0.8.0"
+validators = "^0.35.0"
+yt-dlp = ">=2025.5.22"
 
 # Development
-black = { version = "^23.9.1", optional = true }
-bumpver = { version = "^2023.1126", optional = true }
-isort = { version = "^5.12.0", optional = true }
-flake8 = { version = "^6.1.0", optional = true }
-pip-licenses = { version = "^4.3.2", optional = true }
-pre-commit = { version = "^3.4.0", optional = true }
-pyinstaller = { version = "^5.13.2", optional = true }
+black = { version = "^25.1.0", optional = true }
+bumpver = { version = "^2024.1130", optional = true }
+isort = { version = "^6.0.1", optional = true }
+flake8 = { version = "^7.2.0", optional = true }
+pillow = { version = "^10.4.0", optional = true }
+pip-licenses = { version = "^5.0.0", optional = true }
+pre-commit = { version = "^4.2.0", optional = true }
+pyinstaller = { version = "^6.14.0", optional = true }
 pyqt5-tools = { version = "^5.15.9.3.3", optional = true }
-
-# Test
-pytest = { version = "^7.4.2", optional = true }
-pytest-mock = { version = "^3.11.1", optional = true }
+pytest = { version = "^7.4.4", optional = true }
+pytest-mock = { version = "^3.14.1", optional = true }
 pytest-sugar = { version = "^0.9.7", optional = true }
 
-# Test only dependencies
-pillow = { version = "^10.0.1", optional = true }
-
 [tool.poetry.extras]
-dev = ["black", "bumpver", "isort", "flake8", "pre-commit", "pyqt5-tools"]
-test = ["pytest", "pytest-mock", "pytest-sugar", "pillow"]
-all = ["black", "bumpver", "isort", "flake8", "pre-commit", "pyqt5-tools", "pytest", "pytest-mock", "pytest-sugar", "pillow"]
+dev = ["black", "bumpver", "isort", "flake8", "pre-commit", "pyqt5-tools", "pytest", "pytest-mock", "pytest-sugar", "pillow"]
 
 [build-system]
 requires = ["poetry-core"]
