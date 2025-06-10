@@ -34,6 +34,7 @@ def get_youtube_audiostream(
     # Set yt_dlp options
     ydl_opts = {
         "quiet": quiet,  # Suppress output messages if 'quiet' is True
+        "proxy": "",  # Bypass proxy if there is one
         "format": "bestaudio/best",  # Choose the best quality audio
         "noplaylist": True,  # Ensure only single video is processed, not playlists
         "progress_hooks": [callback] if callback else [],  # Set progress hooks if provided
