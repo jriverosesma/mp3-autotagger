@@ -18,5 +18,5 @@ async def shazam_find_track_info(filepath: Path) -> dict[str, Any]:
         dict[str, Any]: A dictionary containing information about the recognized track.
     """
 
-    # Use Shazam's recognize_song method to identify the track from the provided filepath
-    return await SHAZAM.recognize_song(filepath)
+    # Use Shazam to identify the track from the provided filepath
+    return await SHAZAM.recognize(str(filepath))
