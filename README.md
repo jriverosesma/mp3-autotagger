@@ -25,34 +25,39 @@ Enter URL from Youtube video and download audio as an .mp3 file.
 
 ![Youtube2MP3 tool GUI general view](assets/youtube2mp3_gui.png)
 
-## Background
+## Context
 My dad wanted a tool to automatically tag all the .mp3 files from his old music library and easily download audio from Youtube videos. I developed this especifically for my dad needs only :)
 
 ## Installation
 
-### Python package
-
-1. Prerequisite: Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (more lightweight) or [Anaconda](https://www.anaconda.com/).
-
-2. Open Anaconda Prompt and run the following commands:
-```bash
-conda create -y -n mp3-autotagger python=3.10 --no-default-packages
-conda activate mp3-autotagger
-conda install -y ffmpeg
-python -m pip install --upgrade pip
-pip install mp3-autotagger
-```
-
-⚠️ **Make sure to install `ffmpeg` with the above command** ⚠️
+There are two options:
 
 ### Binary distribution
 
 Binary distributions for Linux, Windows and macOS are available with each GitHub release as stand-alone executables [here](https://github.com/jriverosesma/mp3-autotagger/releases).
 
-⚠️ **Note that you still need to install [ffmpeg](https://ffmpeg.org/) in your system** ⚠️
+⚠️ **You need to install [ffmpeg](https://ffmpeg.org/) in your system for the conversion to .mp3 to work** ⚠️
+
+### Python package
+
+The application is available as a pip-installable package stored in PyPI (requires `python >= 3.10`):
+
+```bash
+pip install mp3-autotagger
+```
+
+Then, start the application by simply running the following command:
+
+```bash
+mp3-autotagger
+```
+
+⚠️ **Note that you still need `ffmpeg` for the conversion to .mp3 to work ⚠️
+
+**Hint**: If you are using Conda, you can install `ffmpeg` using `conda install -y ffmpeg`.
 
 ## Usage
-1. Open Anaconda Prompt and run the following command to activate the conda environment: `conda activate mp3-autotagger`
+1. Open Anaconda Prompt and run the following command to activate the Conda environment: `conda activate mp3-autotagger`
 2. Run the following command to launch the application: `mp3-autotagger`
 
 ### MP3 autotagger
