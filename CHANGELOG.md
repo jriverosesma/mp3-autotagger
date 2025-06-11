@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.2] - 2025-06-11
+
+### Added
+
+- Bypass proxy when downloading audio streams.
+
+### Changed
+
+- General update to dependencies.
+
+### Fixed
+
+- Cover retrieval.
+
 ## [1.2.1] - 2023-09-18
 
 ### Fixed
