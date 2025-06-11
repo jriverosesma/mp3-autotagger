@@ -1,6 +1,6 @@
 [project]
 name = "mp3-autotagger"
-version = "v1.2.1"
+version = "v1.2.2"
 description = "A simple application to tag .mp3 files automatically and more."
 authors = [
   { name = "Juan Rivero Sesma", email = "jriverosesma@gmail.com" }
@@ -60,7 +60,7 @@ profile = "black"
 line_length = 120
 
 [tool.bumpver]
-current_version = "v1.2.1"
+current_version = "v1.2.2"
 version_pattern = "vMAJOR.MINOR.PATCH"
 commit          = true
 tag             = true
