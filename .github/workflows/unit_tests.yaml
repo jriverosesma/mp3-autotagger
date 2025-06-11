@@ -9,7 +9,7 @@ on:
       - gui/*
       - scripts/*
       - LICENSE
-      - NOTICES
+      - NOTICES.md
       - '**/*.md'
   pull_request:
     branches:
@@ -19,7 +19,7 @@ on:
       - gui/*
       - scripts/*
       - LICENSE
-      - NOTICES
+      - NOTICES.md
       - '**/*.md'
 
 concurrency:
@@ -32,26 +32,32 @@ jobs:
 
     steps:
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Create .condarc file
       run: |
         echo 'create_default_packages: []' > .condarc
 
     - name: Set up Conda environment
-      uses: conda-incubator/setup-miniconda@v2
+      uses: conda-incubator/setup-miniconda@v3
       with:
         python-version: "3.10"
         activate-environment: mp3-autotagger
         auto-activate-base: false
         condarc-file: .condarc
+        channels: conda-forge,defaults
+        channel-priority: strict
+
+    - name: Update Conda
+      shell: bash -l {0}
+      run: conda update -n base -c defaults conda -y
 
     - name: Install dependencies with conda and pip
       shell: bash -l {0}
       run: |
         conda install ffmpeg
         python -m pip install --upgrade pip
-        pip install -e .[all]
+        pip install -e .[dev]
 
     - name: Run formatters
       shell: bash -l {0}
